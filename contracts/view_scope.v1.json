@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "manual_route": "preserve_existing_compile_views_exactly",
+  "view_groups": {
+    "face_front": [
+      "subject",
+      "hair",
+      "face",
+      "upper_outfit",
+      "head_accessories"
+    ],
+    "face_left": [
+      "subject",
+      "hair",
+      "face",
+      "upper_outfit",
+      "head_accessories"
+    ],
+    "face_right": [
+      "subject",
+      "hair",
+      "face",
+      "upper_outfit",
+      "head_accessories"
+    ],
+    "face_3q_left": [
+      "subject",
+      "hair",
+      "face",
+      "upper_outfit",
+      "head_accessories"
+    ],
+    "face_3q_right": [
+      "subject",
+      "hair",
+      "face",
+      "upper_outfit",
+      "head_accessories"
+    ],
+    "face_back": [
+      "subject",
+      "hair",
+      "upper_outfit",
+      "head_accessories"
+    ],
+    "body_front": [
+      "subject",
+      "hair",
+      "face",
+      "body",
+      "upper_outfit",
+      "lower_outfit",
+      "hands",
+      "feet",
+      "head_accessories",
+      "body_accessories"
+    ],
+    "body_left": [
+      "subject",
+      "hair",
+      "face",
+      "body",
+      "upper_outfit",
+      "lower_outfit",
+      "hands",
+      "feet",
+      "head_accessories",
+      "body_accessories"
+    ],
+    "body_back": [
+      "subject",
+      "hair",
+      "body",
+      "upper_outfit",
+      "lower_outfit",
+      "hands",
+      "feet",
+      "head_accessories",
+      "body_accessories"
+    ],
+    "clothing_front": [
+      "upper_outfit",
+      "lower_outfit"
+    ],
+    "clothing_back": [
+      "upper_outfit",
+      "lower_outfit"
+    ],
+    "hands": [
+      "hands"
+    ],
+    "feet": [
+      "feet"
+    ]
+  }
+}

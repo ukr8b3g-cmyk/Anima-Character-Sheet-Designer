@@ -1,0 +1,345 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:anima-character-sheet:state:1",
+  "title": "Proposed Anima Character Sheet Designer state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "anima_character_sheet"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "views": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 13,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "face_front",
+          "face_left",
+          "face_right",
+          "face_3q_left",
+          "face_3q_right",
+          "face_back",
+          "body_front",
+          "body_left",
+          "body_back",
+          "clothing_front",
+          "clothing_back",
+          "hands",
+          "feet"
+        ]
+      }
+    },
+    "subject_kind": {
+      "type": "string",
+      "enum": [
+        "unspecified",
+        "woman",
+        "man",
+        "person",
+        "nonhuman"
+      ]
+    },
+    "part_prompts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "head_hair": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "face": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "upper_clothing": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "back_clothing": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "lower_body": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "hands": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "footwear": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "other": {
+          "type": "string",
+          "maxLength": 1000
+        }
+      },
+      "required": []
+    },
+    "appearance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hand_state": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "bare",
+            "gloved"
+          ]
+        },
+        "clothing_type": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "pants",
+            "skirt_robe"
+          ]
+        },
+        "footwear_state": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "shod",
+            "unshod"
+          ]
+        }
+      },
+      "required": [
+        "hand_state",
+        "clothing_type",
+        "footwear_state"
+      ]
+    },
+    "style": {
+      "type": "string",
+      "enum": [
+        "none",
+        "anime",
+        "photo",
+        "realistic_painting",
+        "semi_realistic_anime",
+        "oil_painting",
+        "watercolor",
+        "gouache",
+        "colored_pencil",
+        "3d"
+      ]
+    },
+    "background": {
+      "type": "string",
+      "enum": [
+        "white",
+        "light_gray"
+      ]
+    },
+    "render_profile": {
+      "type": "string",
+      "enum": [
+        "standard",
+        "low_memory"
+      ]
+    },
+    "view_seed_offsets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "face_front": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "face_left": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "face_right": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "face_3q_left": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "face_3q_right": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "face_back": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "body_front": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "body_left": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "body_back": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "clothing_front": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "clothing_back": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "hands": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "feet": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      },
+      "required": []
+    },
+    "size": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "manual"
+          ]
+        },
+        "body_height": {
+          "type": "integer",
+          "minimum": 256,
+          "maximum": 16384,
+          "multipleOf": 16
+        },
+        "pixel_budget": {
+          "type": "integer",
+          "enum": [
+            1000000,
+            1500000,
+            2000000,
+            4000000
+          ]
+        },
+        "manual_width": {
+          "type": "integer",
+          "minimum": 256,
+          "maximum": 16384,
+          "multipleOf": 16
+        },
+        "manual_height": {
+          "type": "integer",
+          "minimum": 256,
+          "maximum": 16384,
+          "multipleOf": 16
+        }
+      },
+      "required": [
+        "mode",
+        "body_height",
+        "pixel_budget",
+        "manual_width",
+        "manual_height"
+      ]
+    },
+    "view_prompts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "face_front": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "face_left": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "face_right": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "face_3q_left": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "face_3q_right": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "face_back": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "body_front": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "body_left": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "body_back": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "clothing_front": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "clothing_back": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "hands": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "feet": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    }
+  },
+  "required": [
+    "kind",
+    "schema_version",
+    "views",
+    "subject_kind",
+    "part_prompts",
+    "appearance",
+    "style",
+    "background",
+    "render_profile",
+    "view_seed_offsets",
+    "size",
+    "view_prompts"
+  ],
+  "$comment": "Specification fixture, not an installed node. Strings count Unicode code points; runtime rejects unpaired surrogates, duplicate JSON keys, bool-as-int, float/exponent integer tokens, and state larger than 65536 UTF-8 bytes. Preview does not sample or load weights. base_seed and image are separate node inputs, not duplicated in this state."
+}

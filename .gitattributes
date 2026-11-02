@@ -1,0 +1,5 @@
+# Preserve supplied workflows and deterministic release bytes on every OS.
+* -text
+*.png binary
+*.webp binary
+*.zip binary

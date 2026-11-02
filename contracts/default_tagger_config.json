@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "anima_tagger_config",
+  "thresholds": {
+    "general": null,
+    "character": null,
+    "style": null,
+    "copyright": null,
+    "meta": null,
+    "rating": null
+  },
+  "include_character": false,
+  "include_copyright": false,
+  "exclude_tags": [],
+  "scope_additions": {},
+  "multi_subject_policy": "block",
+  "max_tags": 128,
+  "device_id": 0,
+  "refresh_nonce": 0
+}

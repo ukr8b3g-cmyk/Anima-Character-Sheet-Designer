@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Anima Sheet Plan v2 — Tagger Migration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "compiler_revision",
+    "canvas",
+    "background",
+    "input_source",
+    "generation_signature",
+    "views",
+    "plan_hash"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "kind": {
+      "const": "anima_character_sheet_plan"
+    },
+    "compiler_revision": {
+      "const": "anima-sheet-2.0.0"
+    },
+    "canvas": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "integer",
+        "minimum": 256,
+        "maximum": 16384,
+        "multipleOf": 16
+      }
+    },
+    "background": {
+      "enum": [
+        "white",
+        "light_gray"
+      ]
+    },
+    "input_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "prompt_sha256",
+        "profile_hash",
+        "image_hash",
+        "tagger_model_id",
+        "tagger_model_sha256"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "manual",
+            "image_tags"
+          ]
+        },
+        "prompt_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "profile_hash": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "image_hash": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tagger_model_id": {
+          "enum": [
+            "pixai_v1_fp16",
+            "wd_eva02_large_v3",
+            null
+          ]
+        },
+        "tagger_model_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "manual"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "profile_hash": {
+                "type": "null"
+              },
+              "image_hash": {
+                "type": "null"
+              },
+              "tagger_model_id": {
+                "type": "null"
+              },
+              "tagger_model_sha256": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "profile_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "image_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "tagger_model_id": {
+                "enum": [
+                  "pixai_v1_fp16",
+                  "wd_eva02_large_v3"
+                ]
+              },
+              "tagger_model_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "generation_signature": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "plan_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "views": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 13,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "view_id",
+          "bounds"
+        ],
+        "properties": {
+          "view_id": {
+            "enum": [
+              "face_front",
+              "face_left",
+              "face_right",
+              "face_3q_left",
+              "face_3q_right",
+              "face_back",
+              "body_front",
+              "body_left",
+              "body_back",
+              "clothing_front",
+              "clothing_back",
+              "hands",
+              "feet"
+            ]
+          },
+          "bounds": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16384
+            }
+          }
+        }
+      }
+    }
+  },
+  "$comment": "Runtime additionally checks view identity/order, area cap, non-overlap, bounds, plan hash, source consistency and generation signature against all records."
+}

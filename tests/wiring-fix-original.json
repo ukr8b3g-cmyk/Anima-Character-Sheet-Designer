@@ -1,0 +1,1240 @@
+{
+  "id": "53c2d294-c02d-42f6-ad69-a9bb082c6e13",
+  "revision": 0,
+  "last_node_id": 22,
+  "last_link_id": 23,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "PrimitiveBoolean",
+      "pos": [
+        -770,
+        40
+      ],
+      "size": [
+        350,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "BOOLEAN",
+          "type": "BOOLEAN",
+          "slot_index": 0,
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "PrimitiveBoolean"
+      },
+      "widgets_values": [
+        false
+      ],
+      "widgets_values_named": {
+        "value": false
+      }
+    },
+    {
+      "id": 2,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        -770,
+        -360
+      ],
+      "size": [
+        340,
+        310
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "PrimitiveStringMultiline"
+      },
+      "widgets_values": [
+        "1girl, solo,  Hatsune Miku, maid uniform, apron,"
+      ],
+      "widgets_values_named": {
+        "value": "1girl, solo,  Hatsune Miku, maid uniform, apron,"
+      }
+    },
+    {
+      "id": 4,
+      "type": "AnimaCharacterSheetDesigner",
+      "pos": [
+        210,
+        -320
+      ],
+      "size": [
+        760,
+        1070
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "テキスト入力",
+          "name": "prompt",
+          "shape": 7,
+          "type": "STRING",
+          "link": 19
+        },
+        {
+          "label": "外観分類JSON",
+          "name": "profile_json",
+          "shape": 7,
+          "type": "STRING",
+          "link": 20
+        },
+        {
+          "label": "保存設定JSON",
+          "name": "state_json",
+          "type": "STRING",
+          "widget": {
+            "name": "state_json"
+          },
+          "link": null
+        },
+        {
+          "label": "基準seed",
+          "name": "base_seed",
+          "type": "INT",
+          "widget": {
+            "name": "base_seed"
+          },
+          "link": null
+        },
+        {
+          "name": "character_image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference_mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "ポジティブ",
+          "name": "positive",
+          "shape": 6,
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            8
+          ]
+        },
+        {
+          "label": "幅",
+          "name": "width",
+          "shape": 6,
+          "type": "INT",
+          "slot_index": 1,
+          "links": [
+            1
+          ]
+        },
+        {
+          "label": "高さ",
+          "name": "height",
+          "shape": 6,
+          "type": "INT",
+          "slot_index": 2,
+          "links": [
+            2
+          ]
+        },
+        {
+          "label": "seed",
+          "name": "seed",
+          "shape": 6,
+          "type": "INT",
+          "slot_index": 3,
+          "links": [
+            11
+          ]
+        },
+        {
+          "label": "配置計画",
+          "name": "sheet_plan",
+          "type": "STRING",
+          "slot_index": 4,
+          "links": null
+        },
+        {
+          "label": "ビュー記録",
+          "name": "view_records",
+          "shape": 6,
+          "type": "STRING",
+          "slot_index": 5,
+          "links": [
+            7
+          ]
+        },
+        {
+          "name": "view_records",
+          "shape": 6,
+          "type": "STRING",
+          "slot_index": 6,
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "anima_sheet_initialized": true,
+        "Node name for S&R": "AnimaCharacterSheetDesigner"
+      },
+      "widgets_values": [
+        "{\"kind\":\"anima_character_sheet\",\"schema_version\":1,\"views\":[\"face_front\",\"face_left\",\"body_front\",\"body_left\",\"body_back\"],\"subject_kind\":\"unspecified\",\"part_prompts\":{},\"appearance\":{\"hand_state\":\"auto\",\"clothing_type\":\"auto\",\"footwear_state\":\"auto\"},\"style\":\"none\",\"background\":\"white\",\"render_profile\":\"standard\",\"view_seed_offsets\":{},\"size\":{\"mode\":\"auto\",\"body_height\":1120,\"pixel_budget\":2000000,\"manual_width\":1536,\"manual_height\":1024},\"view_prompts\":{}}",
+        42
+      ],
+      "widgets_values_named": {
+        "state_json": "{\"kind\":\"anima_character_sheet\",\"schema_version\":1,\"views\":[\"face_front\",\"face_left\",\"body_front\",\"body_left\",\"body_back\"],\"subject_kind\":\"unspecified\",\"part_prompts\":{},\"appearance\":{\"hand_state\":\"auto\",\"clothing_type\":\"auto\",\"footwear_state\":\"auto\"},\"style\":\"none\",\"background\":\"white\",\"render_profile\":\"standard\",\"view_seed_offsets\":{},\"size\":{\"mode\":\"auto\",\"body_height\":1120,\"pixel_budget\":2000000,\"manual_width\":1536,\"manual_height\":1024},\"view_prompts\":{}}",
+        "base_seed": 42
+      },
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 5,
+      "type": "UNETLoader",
+      "pos": [
+        -880,
+        230
+      ],
+      "size": [
+        440,
+        100
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "ANIMA\\waiANIMA_v10Base10.safetensors",
+        "default"
+      ],
+      "widgets_values_named": {
+        "unet_name": "ANIMA\\waiANIMA_v10Base10.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    {
+      "id": 6,
+      "type": "CLIPLoader",
+      "pos": [
+        -880,
+        370
+      ],
+      "size": [
+        430,
+        110
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 0,
+          "links": [
+            9,
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen_3_06b_base.safetensors",
+        "stable_diffusion",
+        "default"
+      ],
+      "widgets_values_named": {
+        "clip_name": "qwen_3_06b_base.safetensors",
+        "type": "stable_diffusion",
+        "device": "default"
+      }
+    },
+    {
+      "id": 7,
+      "type": "VAELoader",
+      "pos": [
+        -880,
+        510
+      ],
+      "size": [
+        420,
+        80
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "qwen_image_vae.safetensors"
+      ],
+      "widgets_values_named": {
+        "vae_name": "qwen_image_vae.safetensors"
+      }
+    },
+    {
+      "id": 10,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1300,
+        -300
+      ],
+      "size": [
+        220,
+        90
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 9
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "widgets_values_named": {
+        "text": ""
+      }
+    },
+    {
+      "id": 11,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1300,
+        -100
+      ],
+      "size": [
+        220,
+        90
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "worst quality, low quality, score_1, score_2, score_3, artist name,blurry, jpeg artifacts, lowres, censor "
+      ],
+      "widgets_values_named": {
+        "text": "worst quality, low quality, score_1, score_2, score_3, artist name,blurry, jpeg artifacts, lowres, censor "
+      }
+    },
+    {
+      "id": 12,
+      "type": "EmptyLatentImage",
+      "pos": [
+        1300,
+        160
+      ],
+      "size": [
+        210,
+        110
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 1
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ],
+      "widgets_values_named": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    {
+      "id": 13,
+      "type": "KSampler",
+      "pos": [
+        1660,
+        -300
+      ],
+      "size": [
+        220,
+        480
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 21
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 12
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 13
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 14
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        0,
+        "fixed",
+        10,
+        1.5,
+        "euler",
+        "simple",
+        1
+      ],
+      "widgets_values_named": {
+        "seed": 0,
+        "control_after_generate": "fixed",
+        "steps": 10,
+        "cfg": 1.5,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "denoise": 1
+      }
+    },
+    {
+      "id": 14,
+      "type": "VAEDecode",
+      "pos": [
+        1990,
+        -300
+      ],
+      "size": [
+        140,
+        50
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 3
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 15,
+      "type": "AnimaCharacterSheetAssemble",
+      "pos": [
+        2120,
+        -170
+      ],
+      "size": [
+        360,
+        110
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "生成画像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 5
+        },
+        {
+          "label": "ビュー記録",
+          "name": "view_records",
+          "type": "STRING",
+          "widget": {
+            "name": "view_records"
+          },
+          "link": 6
+        },
+        {
+          "label": "配置計画",
+          "name": "sheet_plan",
+          "type": "STRING",
+          "widget": {
+            "name": "sheet_plan"
+          },
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "label": "合成シート",
+          "name": "sheet",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            15
+          ]
+        },
+        {
+          "label": "合成情報",
+          "name": "assembly_info",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AnimaCharacterSheetAssemble"
+      },
+      "widgets_values": [
+        "",
+        ""
+      ],
+      "widgets_values_named": {
+        "view_records": "",
+        "sheet_plan": ""
+      },
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 18,
+      "type": "SaveWebPMeta",
+      "pos": [
+        2620,
+        -300
+      ],
+      "size": [
+        680,
+        450
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 15
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfyui-save-webp-meta-node",
+        "ver": "0e18ef69cef4120cd9c85c6c7d12bfe75ebafc63",
+        "Node name for S&R": "SaveWebPMeta"
+      },
+      "widgets_values": [
+        "Anima-Character-Sheet-Designer-Text-or-Image",
+        "webp",
+        70
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "Anima-Character-Sheet-Designer-Text-or-Image",
+        "file_format": "webp",
+        "quality": 70
+      }
+    },
+    {
+      "id": 19,
+      "type": "Power Lora Loader (rgthree)",
+      "pos": [
+        -900,
+        670
+      ],
+      "size": [
+        470,
+        150
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "dir": 3,
+          "name": "model",
+          "type": "MODEL",
+          "link": 16
+        },
+        {
+          "dir": 3,
+          "name": "clip",
+          "type": "CLIP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "dir": 4,
+          "name": "MODEL",
+          "shape": 3,
+          "type": "MODEL",
+          "links": [
+            21
+          ]
+        },
+        {
+          "dir": 4,
+          "name": "CLIP",
+          "shape": 3,
+          "type": "CLIP",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "rgthree-comfy",
+        "ver": "1.0.2610300006",
+        "Show Strengths": "Single Strength",
+        "Match": ""
+      },
+      "widgets_values": [
+        {},
+        {
+          "type": "PowerLoraLoaderHeaderWidget"
+        },
+        {
+          "on": true,
+          "lora": "anima\\anima-turbo-lora-v0.2.safetensors",
+          "strength": 0.7,
+          "strengthTwo": null
+        },
+        {},
+        ""
+      ],
+      "widgets_values_named": {
+        "divider": {},
+        "PowerLoraLoaderHeaderWidget": {
+          "type": "PowerLoraLoaderHeaderWidget"
+        },
+        "lora_1": {
+          "on": true,
+          "lora": "anima\\anima-turbo-lora-v0.2.safetensors",
+          "strength": 0.7,
+          "strengthTwo": null
+        },
+        "divider#2": {},
+        "➕ Add Lora": ""
+      },
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 20,
+      "type": "AnimaImageTagger",
+      "pos": [
+        -350,
+        -360
+      ],
+      "size": [
+        530,
+        960
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "テキスト入力",
+          "name": "manual_prompt",
+          "shape": 7,
+          "type": "STRING",
+          "link": 18
+        },
+        {
+          "label": "画像入力",
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 23
+        },
+        {
+          "label": "透過マスク（任意）",
+          "name": "mask",
+          "shape": 7,
+          "type": "MASK",
+          "link": null
+        },
+        {
+          "label": "画像を使用",
+          "name": "use_image",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "use_image"
+          },
+          "link": 17
+        },
+        {
+          "label": "Taggerモデル",
+          "name": "model_id",
+          "type": "COMBO",
+          "widget": {
+            "name": "model_id"
+          },
+          "link": null
+        },
+        {
+          "label": "解析デバイス",
+          "name": "device",
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        },
+        {
+          "label": "Tagger設定JSON",
+          "name": "config_json",
+          "type": "STRING",
+          "widget": {
+            "name": "config_json"
+          },
+          "link": null
+        },
+        {
+          "label": "モデル取得を許可",
+          "name": "allow_download",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "allow_download"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "プロンプト",
+          "name": "prompt",
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            19
+          ]
+        },
+        {
+          "label": "外観分類JSON",
+          "name": "profile_json",
+          "type": "STRING",
+          "slot_index": 1,
+          "links": [
+            20
+          ]
+        },
+        {
+          "label": "解析タグJSON",
+          "name": "raw_tags_json",
+          "type": "STRING",
+          "slot_index": 2,
+          "links": [
+            22
+          ]
+        },
+        {
+          "label": "診断情報",
+          "name": "diagnostics",
+          "type": "STRING",
+          "slot_index": 3,
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AnimaImageTagger"
+      },
+      "widgets_values": [
+        false,
+        "wd_eva02_large_v3",
+        "auto",
+        "{\"schema_version\":1,\"kind\":\"anima_tagger_config\",\"thresholds\":{\"general\":null,\"character\":null,\"style\":null,\"copyright\":null,\"meta\":null,\"rating\":null},\"include_character\":false,\"include_copyright\":false,\"exclude_tags\":[],\"scope_additions\":{},\"multi_subject_policy\":\"block\",\"max_tags\":128,\"device_id\":0,\"refresh_nonce\":0}",
+        false
+      ],
+      "widgets_values_named": {
+        "use_image": false,
+        "model_id": "wd_eva02_large_v3",
+        "device": "auto",
+        "config_json": "{\"schema_version\":1,\"kind\":\"anima_tagger_config\",\"thresholds\":{\"general\":null,\"character\":null,\"style\":null,\"copyright\":null,\"meta\":null,\"rating\":null},\"include_character\":false,\"include_copyright\":false,\"exclude_tags\":[],\"scope_additions\":{},\"multi_subject_policy\":\"block\",\"max_tags\":128,\"device_id\":0,\"refresh_nonce\":0}",
+        "allow_download": false
+      }
+    },
+    {
+      "id": 21,
+      "type": "PreviewAny",
+      "pos": [
+        -330,
+        710
+      ],
+      "size": [
+        420,
+        420
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": [],
+      "widgets_values_named": {}
+    },
+    {
+      "id": 22,
+      "type": "LoadImage",
+      "pos": [
+        -1180,
+        -350
+      ],
+      "size": [
+        344,
+        314
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            23
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "画像を読み込む",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.43.0",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "Luv_mekemeke_00079_.webp",
+        "image"
+      ],
+      "widgets_values_named": {
+        "image": "Luv_mekemeke_00079_.webp",
+        "upload": "image"
+      }
+    }
+  ],
+  "links": [
+    [
+      1,
+      4,
+      1,
+      12,
+      0,
+      "INT"
+    ],
+    [
+      2,
+      4,
+      2,
+      12,
+      1,
+      "INT"
+    ],
+    [
+      3,
+      13,
+      0,
+      14,
+      0,
+      "LATENT"
+    ],
+    [
+      4,
+      7,
+      0,
+      14,
+      1,
+      "VAE"
+    ],
+    [
+      5,
+      14,
+      0,
+      15,
+      0,
+      "IMAGE"
+    ],
+    [
+      6,
+      4,
+      6,
+      15,
+      1,
+      "STRING"
+    ],
+    [
+      7,
+      4,
+      5,
+      15,
+      2,
+      "STRING"
+    ],
+    [
+      8,
+      4,
+      0,
+      10,
+      1,
+      "STRING"
+    ],
+    [
+      9,
+      6,
+      0,
+      10,
+      0,
+      "CLIP"
+    ],
+    [
+      10,
+      6,
+      0,
+      11,
+      0,
+      "CLIP"
+    ],
+    [
+      11,
+      4,
+      3,
+      13,
+      4,
+      "INT"
+    ],
+    [
+      12,
+      10,
+      0,
+      13,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      13,
+      11,
+      0,
+      13,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      14,
+      12,
+      0,
+      13,
+      3,
+      "LATENT"
+    ],
+    [
+      15,
+      15,
+      0,
+      18,
+      0,
+      "IMAGE"
+    ],
+    [
+      16,
+      5,
+      0,
+      19,
+      0,
+      "MODEL"
+    ],
+    [
+      17,
+      1,
+      0,
+      20,
+      3,
+      "BOOLEAN"
+    ],
+    [
+      18,
+      2,
+      0,
+      20,
+      0,
+      "STRING"
+    ],
+    [
+      21,
+      19,
+      0,
+      13,
+      0,
+      "MODEL"
+    ],
+    [
+      22,
+      20,
+      2,
+      21,
+      0,
+      "STRING"
+    ],
+    [
+      19,
+      20,
+      0,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      20,
+      20,
+      1,
+      4,
+      1,
+      "STRING"
+    ],
+    [
+      23,
+      22,
+      0,
+      20,
+      1,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.1915383170548473,
+      "offset": [
+        -1179.7127507417295,
+        531.8009709598317
+      ]
+    },
+    "anima_sheet": {
+      "input_switch": "1",
+      "text_input": "2",
+      "image_input": "3",
+      "quality_status": "GPU validation pending"
+    },
+    "k2cf_state_id": "k2cf_1793550344233_u5f0ej64f9r",
+    "moss_bbox_state_id": "k2cf_1793550344233_u5f0ej64f9r",
+    "frontendVersion": "1.57.4",
+    "anima_template_status": "Provisional user attachment (2); original LoRA wiring retained; Designer sockets migrated"
+  },
+  "extensions": {
+    "seed_widgets": {
+      "13": 0
+    }
+  },
+  "version": 0.4,
+  "seed_widgets": {
+    "13": 0
+  }
+}

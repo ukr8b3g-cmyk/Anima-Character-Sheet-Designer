@@ -1,0 +1,80 @@
+[
+  {
+    "base_seed": 42,
+    "view_id": "face_front",
+    "view_seed_offset": 0,
+    "seed": 3809994191430640
+  },
+  {
+    "base_seed": 42,
+    "view_id": "face_left",
+    "view_seed_offset": 0,
+    "seed": 3462452199669998
+  },
+  {
+    "base_seed": 42,
+    "view_id": "face_right",
+    "view_seed_offset": 0,
+    "seed": 4048486667708521
+  },
+  {
+    "base_seed": 42,
+    "view_id": "face_3q_left",
+    "view_seed_offset": 0,
+    "seed": 3155447411243247
+  },
+  {
+    "base_seed": 42,
+    "view_id": "face_3q_right",
+    "view_seed_offset": 0,
+    "seed": 4091767577519228
+  },
+  {
+    "base_seed": 42,
+    "view_id": "face_back",
+    "view_seed_offset": 0,
+    "seed": 4123544769143503
+  },
+  {
+    "base_seed": 42,
+    "view_id": "body_front",
+    "view_seed_offset": 0,
+    "seed": 5943737685789968
+  },
+  {
+    "base_seed": 42,
+    "view_id": "body_left",
+    "view_seed_offset": 0,
+    "seed": 3329449959104252
+  },
+  {
+    "base_seed": 42,
+    "view_id": "body_back",
+    "view_seed_offset": 0,
+    "seed": 8269698124800833
+  },
+  {
+    "base_seed": 42,
+    "view_id": "clothing_front",
+    "view_seed_offset": 0,
+    "seed": 916649977768932
+  },
+  {
+    "base_seed": 42,
+    "view_id": "clothing_back",
+    "view_seed_offset": 0,
+    "seed": 2438557283613408
+  },
+  {
+    "base_seed": 42,
+    "view_id": "hands",
+    "view_seed_offset": 0,
+    "seed": 8193660612759150
+  },
+  {
+    "base_seed": 42,
+    "view_id": "feet",
+    "view_seed_offset": 0,
+    "seed": 6496927647795289
+  }
+]

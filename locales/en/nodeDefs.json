@@ -1,0 +1,265 @@
+{
+  "AnimaImageTagger": {
+    "inputs": {
+      "use_image": {
+        "name": "Use image",
+        "tooltip": "OFF: connected manual_prompt. ON: connected image."
+      },
+      "model_id": {
+        "name": "Tagger model",
+        "tooltip": "Select a model explicitly: PixAI FP16 (recommended default) or WD FP32. Auto device never changes this model."
+      },
+      "device": {
+        "name": "Analysis device",
+        "tooltip": "Auto tries CUDA with CPU auxiliary operations, then the same model on CPU if unavailable. CUDA requires the GPU provider. INT8 may be slower than FP16 on GPU."
+      },
+      "config_json": {
+        "name": "Tagger settings JSON",
+        "tooltip": "Canonical settings edited in Advanced."
+      },
+      "allow_download": {
+        "name": "Allow model download",
+        "tooltip": "Download only pinned missing model files. Default OFF."
+      },
+      "manual_prompt": {
+        "name": "Text input",
+        "tooltip": "Connect String (Multiline). Used unchanged when Use image is OFF."
+      },
+      "image": {
+        "name": "Image input",
+        "tooltip": "Connect standard Load Image. Required only when Use image is ON."
+      },
+      "mask": {
+        "name": "Optional transparency mask",
+        "tooltip": "Optional same-size MASK. 1 paints white. Connect Load Image MASK only when transparency is needed."
+      },
+      "include_character": {
+        "name": "Include character names",
+        "tooltip": "Include detected character names in portraits/body views. Default OFF; names can introduce familiar costumes."
+      },
+      "include_copyright": {
+        "name": "Include series names",
+        "tooltip": "Include detected series names in portraits/body views. Default OFF; appearance may change."
+      },
+      "allow_multiple_subjects": {
+        "name": "Allow multiple subjects",
+        "tooltip": "Allow analysis of multiple subjects. Their features may mix. Default OFF."
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "prompt",
+        "tooltip": "Unchanged manual text or adopted image tags; connect to Designer prompt."
+      },
+      "1": {
+        "name": "profile_json",
+        "tooltip": "Connect with prompt to Designer profile_json. Restricts tags to relevant views."
+      },
+      "2": {
+        "name": "raw_tags_json",
+        "tooltip": "All raw scores plus excluded/review candidates. Use Preview Any to inspect."
+      },
+      "3": {
+        "name": "diagnostics",
+        "tooltip": "Actual device, cache and timing. Does not affect the image prompt."
+      }
+    },
+    "description": "Switch between connected text and local image tags. No embedded file/text editor."
+  },
+  "AnimaCharacterSheetDesigner": {
+    "inputs": {
+      "state_json": {
+        "name": "state_json",
+        "tooltip": "Designer controls saved as JSON."
+      },
+      "base_seed": {
+        "name": "Base seed",
+        "tooltip": "Base seed for deterministic per-view seed offsets."
+      },
+      "prompt": {
+        "name": "Text input",
+        "tooltip": "Connect String (Multiline). Used unchanged when Use image is OFF."
+      },
+      "profile_json": {
+        "name": "profile_json",
+        "tooltip": "Connect with prompt to Designer profile_json. Restricts tags to relevant views."
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "positive",
+        "tooltip": "Per-view positive list."
+      },
+      "1": {
+        "name": "width",
+        "tooltip": "Per-view render width."
+      },
+      "2": {
+        "name": "height",
+        "tooltip": "Per-view render height."
+      },
+      "3": {
+        "name": "seed",
+        "tooltip": "Per-view seed."
+      },
+      "4": {
+        "name": "sheet_plan",
+        "tooltip": "Connect to Assemble sheet_plan."
+      },
+      "5": {
+        "name": "view_records",
+        "tooltip": "Connect to Assemble view_records."
+      }
+    }
+  },
+  "AnimaCharacterSheetAssemble": {
+    "inputs": {
+      "images": {
+        "name": "images",
+        "tooltip": "Generated per-view images in declared order."
+      },
+      "view_records": {
+        "name": "view_records",
+        "tooltip": "Connect to Assemble view_records."
+      },
+      "sheet_plan": {
+        "name": "sheet_plan",
+        "tooltip": "Connect to Assemble sheet_plan."
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "sheet",
+        "tooltip": "Assembled character sheet."
+      },
+      "1": {
+        "name": "assembly_info",
+        "tooltip": "Plan and requested generation metadata; not image quality measurements."
+      }
+    }
+  },
+  "AnimaSheetInputs": {
+    "inputs": {
+      "manual_prompt": {
+        "name": "Text input",
+        "tooltip": "Connect String (Multiline). Used unchanged when Use image is OFF."
+      },
+      "image": {
+        "name": "Image input",
+        "tooltip": "Connect standard Load Image. Required only when Use image is ON."
+      },
+      "device": {
+        "name": "Analysis device",
+        "tooltip": "Auto tries CUDA with CPU auxiliary operations, then the same model on CPU if unavailable. CUDA requires the GPU provider. INT8 may be slower than FP16 on GPU."
+      },
+      "model_id": {
+        "name": "Tagger model",
+        "tooltip": "Select a model explicitly: PixAI FP16 (recommended default) or WD FP32. Auto device never changes this model."
+      },
+      "include_character": {
+        "name": "Include character names",
+        "tooltip": "Include detected character names in portraits/body views. Default OFF; names can introduce familiar costumes."
+      },
+      "include_copyright": {
+        "name": "Include series names",
+        "tooltip": "Include detected series names in portraits/body views. Default OFF; appearance may change."
+      },
+      "allow_multiple_subjects": {
+        "name": "Allow multiple subjects",
+        "tooltip": "Allow analysis of multiple subjects. Their features may mix. Default OFF."
+      },
+      "value": {
+        "name": "Use Image Input",
+        "tooltip": "OFF: connected manual_prompt. ON: connected image."
+      },
+      "vae_name": {
+        "name": "vae_name",
+        "tooltip": "Select the installed model file."
+      },
+      "clip_name": {
+        "name": "clip_name",
+        "tooltip": "Select the installed model file."
+      },
+      "lora_name": {
+        "name": "lora_name",
+        "tooltip": "Select the installed model file."
+      },
+      "unet_name": {
+        "name": "unet_name",
+        "tooltip": "Select the installed model file."
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "prompt",
+        "tooltip": "Unchanged manual text or adopted image tags; connect to Designer prompt."
+      },
+      "1": {
+        "name": "profile_json",
+        "tooltip": "Connect with prompt to Designer profile_json. Restricts tags to relevant views."
+      },
+      "2": {
+        "name": "raw_tags_json",
+        "tooltip": "All raw scores plus excluded/review candidates. Use Preview Any to inspect."
+      },
+      "3": {
+        "name": "CLIP",
+        "tooltip": "Text encoder used for the positive and negative prompts."
+      },
+      "4": {
+        "name": "VAE",
+        "tooltip": "VAE used to decode generated views."
+      },
+      "5": {
+        "name": "MODEL",
+        "tooltip": "Diffusion model used for each view."
+      }
+    }
+  },
+  "AnimaSheetRender": {
+    "inputs": {
+      "model": {
+        "name": "model",
+        "tooltip": "Diffusion model used for each view."
+      },
+      "clip": {
+        "name": "clip",
+        "tooltip": "Text encoder used for the positive and negative prompts."
+      },
+      "vae": {
+        "name": "vae",
+        "tooltip": "VAE used to decode generated views."
+      },
+      "width": {
+        "name": "width",
+        "tooltip": "Per-view generation width."
+      },
+      "height": {
+        "name": "height",
+        "tooltip": "Per-view generation height."
+      },
+      "seed": {
+        "name": "seed",
+        "tooltip": "Per-view generation seed."
+      },
+      "text": {
+        "name": "text",
+        "tooltip": "Per-view positive prompt."
+      },
+      "sheet_plan": {
+        "name": "sheet_plan",
+        "tooltip": "Connect to Assemble sheet_plan."
+      },
+      "view_records": {
+        "name": "view_records",
+        "tooltip": "Connect to Assemble view_records."
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "sheet",
+        "tooltip": "Assembled character sheet."
+      }
+    }
+  }
+}

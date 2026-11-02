@@ -1,0 +1,305 @@
+{
+  "synthetic": true,
+  "not_model_predictions": true,
+  "cases": [
+    {
+      "id": "appearance_vs_scene",
+      "tags": [
+        {
+          "name": "1girl",
+          "score": 0.99
+        },
+        {
+          "name": "blue_hair",
+          "score": 0.98
+        },
+        {
+          "name": "long_hair",
+          "score": 0.9
+        },
+        {
+          "name": "green_eyes",
+          "score": 0.92
+        },
+        {
+          "name": "purple_coat",
+          "score": 0.87
+        },
+        {
+          "name": "black_pants",
+          "score": 0.8
+        },
+        {
+          "name": "white_boots",
+          "score": 0.79
+        },
+        {
+          "name": "outdoors",
+          "score": 0.99
+        },
+        {
+          "name": "sitting",
+          "score": 0.95
+        },
+        {
+          "name": "from_behind",
+          "score": 0.9
+        },
+        {
+          "name": "city",
+          "score": 0.88
+        },
+        {
+          "name": "hair_grab",
+          "score": 0.8
+        },
+        {
+          "name": "unknown_costume_xyz",
+          "score": 0.7
+        }
+      ],
+      "expected": {
+        "groups": {
+          "subject": [
+            "1girl"
+          ],
+          "hair": [
+            "blue_hair",
+            "long_hair"
+          ],
+          "face": [
+            "green_eyes"
+          ],
+          "body": [],
+          "upper_outfit": [
+            "purple_coat"
+          ],
+          "lower_outfit": [
+            "black_pants"
+          ],
+          "hands": [],
+          "feet": [
+            "white_boots"
+          ],
+          "head_accessories": [],
+          "body_accessories": []
+        },
+        "excluded": [
+          {
+            "name": "outdoors",
+            "reason": "non_appearance"
+          },
+          {
+            "name": "sitting",
+            "reason": "non_appearance"
+          },
+          {
+            "name": "from_behind",
+            "reason": "non_appearance"
+          },
+          {
+            "name": "city",
+            "reason": "non_appearance"
+          }
+        ],
+        "review": [
+          {
+            "name": "hair_grab",
+            "reason": "unknown_tag"
+          },
+          {
+            "name": "unknown_costume_xyz",
+            "reason": "unknown_tag"
+          }
+        ]
+      }
+    },
+    {
+      "id": "category_separation",
+      "tags": [
+        {
+          "name": "blue_hair",
+          "score": 0.9,
+          "category": 0
+        },
+        {
+          "name": "some_character",
+          "score": 0.95,
+          "category": 4
+        },
+        {
+          "name": "some_style_label",
+          "score": 0.95,
+          "category": 1
+        },
+        {
+          "name": "some_series",
+          "score": 0.95,
+          "category": 3
+        },
+        {
+          "name": "rating:g",
+          "score": 0.99,
+          "category": 9
+        }
+      ],
+      "expected": {
+        "groups": {
+          "subject": [],
+          "hair": [
+            "blue_hair"
+          ],
+          "face": [],
+          "body": [],
+          "upper_outfit": [],
+          "lower_outfit": [],
+          "hands": [],
+          "feet": [],
+          "head_accessories": [],
+          "body_accessories": []
+        },
+        "excluded": [
+          {
+            "name": "rating:g",
+            "reason": "category_disabled"
+          },
+          {
+            "name": "some_character",
+            "reason": "category_disabled"
+          },
+          {
+            "name": "some_style_label",
+            "reason": "category_disabled"
+          },
+          {
+            "name": "some_series",
+            "reason": "category_disabled"
+          }
+        ],
+        "review": []
+      }
+    },
+    {
+      "id": "threshold_equal",
+      "tags": [
+        {
+          "name": "boots",
+          "score": 0.17
+        },
+        {
+          "name": "coat",
+          "score": 0.1699999
+        }
+      ],
+      "expected": {
+        "groups": {
+          "subject": [],
+          "hair": [],
+          "face": [],
+          "body": [],
+          "upper_outfit": [],
+          "lower_outfit": [],
+          "hands": [],
+          "feet": [
+            "boots"
+          ],
+          "head_accessories": [],
+          "body_accessories": []
+        },
+        "excluded": [],
+        "review": []
+      }
+    },
+    {
+      "id": "score_tie_csv_order",
+      "tags": [
+        {
+          "name": "coat",
+          "score": 0.8
+        },
+        {
+          "name": "shirt",
+          "score": 0.8
+        },
+        {
+          "name": "jacket",
+          "score": 0.8
+        }
+      ],
+      "expected": {
+        "groups": {
+          "subject": [],
+          "hair": [],
+          "face": [],
+          "body": [],
+          "upper_outfit": [
+            "coat",
+            "shirt",
+            "jacket"
+          ],
+          "lower_outfit": [],
+          "hands": [],
+          "feet": [],
+          "head_accessories": [],
+          "body_accessories": []
+        },
+        "excluded": [],
+        "review": []
+      }
+    },
+    {
+      "id": "multi_subject_block",
+      "tags": [
+        {
+          "name": "2girls",
+          "score": 0.9
+        },
+        {
+          "name": "blue_hair",
+          "score": 0.9
+        }
+      ],
+      "expected": {
+        "error": "E_MULTIPLE_SUBJECTS"
+      }
+    },
+    {
+      "id": "unknown_is_review_not_invented",
+      "tags": [
+        {
+          "name": "invented_boots_color",
+          "score": 0.99
+        },
+        {
+          "name": "hair_grab",
+          "score": 0.99
+        }
+      ],
+      "expected": {
+        "groups": {
+          "subject": [],
+          "hair": [],
+          "face": [],
+          "body": [],
+          "upper_outfit": [],
+          "lower_outfit": [],
+          "hands": [],
+          "feet": [],
+          "head_accessories": [],
+          "body_accessories": []
+        },
+        "excluded": [],
+        "review": [
+          {
+            "name": "invented_boots_color",
+            "reason": "unknown_tag"
+          },
+          {
+            "name": "hair_grab",
+            "reason": "unknown_tag"
+          }
+        ]
+      }
+    }
+  ]
+}

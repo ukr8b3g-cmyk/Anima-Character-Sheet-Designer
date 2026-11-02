@@ -1,0 +1,495 @@
+{
+  "status": "local_implementation_unvalidated",
+  "contract_version": "anima-sheet-2.0.0",
+  "view_order": [
+    "face_front",
+    "face_left",
+    "face_right",
+    "face_3q_left",
+    "face_3q_right",
+    "face_back",
+    "body_front",
+    "body_left",
+    "body_back",
+    "clothing_front",
+    "clothing_back",
+    "hands",
+    "feet"
+  ],
+  "part_order": [
+    "head_hair",
+    "face",
+    "upper_clothing",
+    "back_clothing",
+    "lower_body",
+    "hands",
+    "footwear",
+    "other"
+  ],
+  "view_definitions": {
+    "face_front": {
+      "name": "Front portrait",
+      "kind": "portrait",
+      "tags": "portrait, front view",
+      "instruction": "portrait, close-up, front view, head and shoulders",
+      "quality_status": "standard_target"
+    },
+    "face_left": {
+      "name": "left portrait",
+      "kind": "portrait",
+      "tags": "portrait, from side, profile",
+      "instruction": "portrait, close-up, profile, facing image-right, head and shoulders",
+      "quality_status": "standard_target"
+    },
+    "face_right": {
+      "name": "right portrait",
+      "kind": "portrait",
+      "tags": "portrait, from side, profile",
+      "instruction": "portrait, close-up, profile, facing image-left, head and shoulders",
+      "quality_status": "quality_gate_required"
+    },
+    "face_3q_left": {
+      "name": "left three-quarter portrait",
+      "kind": "portrait",
+      "tags": "portrait, three-quarter view",
+      "instruction": "portrait, close-up, three-quarter view, facing image-right, head and shoulders",
+      "quality_status": "quality_gate_required"
+    },
+    "face_3q_right": {
+      "name": "right three-quarter portrait",
+      "kind": "portrait",
+      "tags": "portrait, three-quarter view",
+      "instruction": "portrait, close-up, three-quarter view, facing image-left, head and shoulders",
+      "quality_status": "quality_gate_required"
+    },
+    "face_back": {
+      "name": "Rear head",
+      "kind": "portrait",
+      "tags": "head and shoulders, from behind",
+      "instruction": "close-up, (from behind:2), back of head, head and shoulders",
+      "quality_status": "quality_gate_required"
+    },
+    "body_front": {
+      "name": "Full-body front",
+      "kind": "body",
+      "tags": "full body, standing, front view",
+      "instruction": "Show one complete standing character from the front, with a neutral pose and room above the hair and below both soles.",
+      "quality_status": "standard_target"
+    },
+    "body_left": {
+      "name": "Full-body left side",
+      "kind": "body",
+      "tags": "full body, standing, from side",
+      "instruction": "Complete subject in profile facing image-right.",
+      "quality_status": "standard_target"
+    },
+    "body_back": {
+      "name": "Full-body back",
+      "kind": "body",
+      "tags": "full body, standing, from behind",
+      "instruction": "Show one complete standing character directly from behind. Keep the head facing away, with no visible face or eyes.",
+      "quality_status": "standard_target"
+    },
+    "clothing_front": {
+      "name": "Unworn outfit front",
+      "kind": "clothing",
+      "tags": "clothes, flat lay",
+      "instruction": "The outfit is flat, front View of the outfit, no human, Remove the person",
+      "quality_status": "quality_gate_required"
+    },
+    "clothing_back": {
+      "name": "Unworn outfit back",
+      "kind": "clothing",
+      "tags": "clothes, flat lay",
+      "instruction": "The outfit is flat, (from behind:2), back of the outfit, no human, Remove the person",
+      "quality_status": "quality_gate_required"
+    },
+    "hands": {
+      "name": "Paired hands",
+      "kind": "detail",
+      "tags": "hands, close-up",
+      "instruction": "Both complete hands, cropped at the wrists.",
+      "quality_status": "quality_gate_required"
+    },
+    "feet": {
+      "name": "Paired feet or footwear",
+      "kind": "detail",
+      "tags": "feet, close-up",
+      "instruction": "Show one complete left foot and one complete right foot, or their described footwear. Include the complete soles and visible boot shafts.",
+      "quality_status": "quality_gate_required"
+    }
+  },
+  "presets": {
+    "five": [
+      "face_front",
+      "face_left",
+      "body_front",
+      "body_left",
+      "body_back"
+    ],
+    "basic": [
+      "face_front",
+      "body_front",
+      "body_left",
+      "body_back"
+    ],
+    "turnaround": [
+      "body_front",
+      "body_left",
+      "body_back"
+    ],
+    "single": [
+      "body_front"
+    ],
+    "seven": [
+      "face_front",
+      "face_left",
+      "body_front",
+      "body_left",
+      "body_back",
+      "hands",
+      "feet"
+    ],
+    "head": [
+      "face_front",
+      "face_left",
+      "face_right",
+      "face_3q_left",
+      "face_3q_right",
+      "face_back"
+    ],
+    "clothing": [
+      "clothing_front",
+      "clothing_back"
+    ],
+    "detail": [
+      "face_front",
+      "face_left",
+      "face_right",
+      "face_3q_left",
+      "face_3q_right",
+      "face_back",
+      "body_front",
+      "body_left",
+      "body_back",
+      "clothing_front",
+      "clothing_back",
+      "hands",
+      "feet"
+    ]
+  },
+  "render_sizes": {
+    "standard": {
+      "portrait": [
+        1024,
+        1024
+      ],
+      "body": [
+        640,
+        1536
+      ],
+      "clothing": [
+        768,
+        1344
+      ],
+      "detail": [
+        1216,
+        832
+      ],
+      "footwear": [
+        1152,
+        896
+      ]
+    },
+    "low_memory": {
+      "portrait": [
+        768,
+        768
+      ],
+      "body": [
+        512,
+        1280
+      ],
+      "clothing": [
+        640,
+        1024
+      ],
+      "detail": [
+        960,
+        640
+      ],
+      "footwear": [
+        960,
+        640
+      ]
+    }
+  },
+  "part_visibility": {
+    "head_hair": [
+      "face_front",
+      "face_left",
+      "face_right",
+      "face_3q_left",
+      "face_3q_right",
+      "face_back",
+      "body_front",
+      "body_left",
+      "body_back"
+    ],
+    "face": [
+      "face_front",
+      "face_left",
+      "face_right",
+      "face_3q_left",
+      "face_3q_right",
+      "body_front",
+      "body_left"
+    ],
+    "upper_clothing": [
+      "face_front",
+      "face_left",
+      "face_right",
+      "face_3q_left",
+      "face_3q_right",
+      "face_back",
+      "body_front",
+      "body_left",
+      "body_back",
+      "clothing_front",
+      "clothing_back"
+    ],
+    "back_clothing": [
+      "face_back",
+      "body_back",
+      "clothing_back"
+    ],
+    "lower_body": [
+      "body_front",
+      "body_left",
+      "body_back",
+      "clothing_front",
+      "clothing_back"
+    ],
+    "hands": [
+      "body_front",
+      "body_left",
+      "body_back",
+      "hands"
+    ],
+    "footwear": [
+      "body_front",
+      "body_left",
+      "body_back",
+      "feet"
+    ],
+    "other": [
+      "face_front",
+      "face_left",
+      "face_right",
+      "face_3q_left",
+      "face_3q_right",
+      "face_back",
+      "body_front",
+      "body_left",
+      "body_back"
+    ]
+  },
+  "prompt_rules": [
+    "One independent image per view. Never emit MOSS Layout JSON, Picture tokens, BREAK tokens, or sheet-level multi-view instructions.",
+    "Manual appearance remains unchanged. Image tags are explicitly scoped by the linked appearance profile; no image adapter or LLM is used.",
+    "Use short Anima-style tags followed by two short view instructions where useful; user part text is preserved verbatim.",
+    "Count/solo subject tags are used for portraits and full figures only; do not add person tags or global subject notes to garments, hands, or feet.",
+    "Do not invent details on unseen rear surfaces; preserve explicit rear-view notes and mark inferred surfaces in documentation.",
+    "User notes may conflict semantically with structural instructions; do not claim arbitrary text can be filtered or guaranteed overridden.",
+    "White/gray background is a generation instruction plus the compositor canvas; it is not automatic subject segmentation.",
+    "No automatic retries, inferred outfit fabrication, special per-character hardcoding, or prompt truncation."
+  ],
+  "seed_contract": {
+    "algorithm": "int.from_bytes(SHA256(UTF8(\"anima-sheet-seed-v1\\n\" + str(base_seed) + \"\\n\" + view_id + \"\\n\" + str(view_seed_offset)))[:8],\"big\") & ((1<<53)-1)",
+    "base_seed_max": 9007199254740991,
+    "base_seed_default": 42,
+    "selection_order_independent": true
+  },
+  "outputs": [
+    {
+      "name": "positive",
+      "type": "STRING",
+      "is_list": true
+    },
+    {
+      "name": "width",
+      "type": "INT",
+      "is_list": true
+    },
+    {
+      "name": "height",
+      "type": "INT",
+      "is_list": true
+    },
+    {
+      "name": "seed",
+      "type": "INT",
+      "is_list": true
+    },
+    {
+      "name": "legacy_image_unused",
+      "type": "IMAGE",
+      "is_list": false
+    },
+    {
+      "name": "sheet_plan",
+      "type": "STRING",
+      "is_list": false
+    },
+    {
+      "name": "view_records",
+      "type": "STRING",
+      "is_list": true
+    }
+  ],
+  "views": {
+    "face_front": {
+      "name": "Front portrait",
+      "kind": "portrait",
+      "tags": "portrait, front view",
+      "instruction": "portrait, close-up, front view, head and shoulders",
+      "quality_status": "standard_target"
+    },
+    "face_left": {
+      "name": "left portrait",
+      "kind": "portrait",
+      "tags": "portrait, from side, profile",
+      "instruction": "portrait, close-up, profile, facing image-right, head and shoulders",
+      "quality_status": "standard_target"
+    },
+    "face_right": {
+      "name": "right portrait",
+      "kind": "portrait",
+      "tags": "portrait, from side, profile",
+      "instruction": "portrait, close-up, profile, facing image-left, head and shoulders",
+      "quality_status": "quality_gate_required"
+    },
+    "face_3q_left": {
+      "name": "left three-quarter portrait",
+      "kind": "portrait",
+      "tags": "portrait, three-quarter view",
+      "instruction": "portrait, close-up, three-quarter view, facing image-right, head and shoulders",
+      "quality_status": "quality_gate_required"
+    },
+    "face_3q_right": {
+      "name": "right three-quarter portrait",
+      "kind": "portrait",
+      "tags": "portrait, three-quarter view",
+      "instruction": "portrait, close-up, three-quarter view, facing image-left, head and shoulders",
+      "quality_status": "quality_gate_required"
+    },
+    "face_back": {
+      "name": "Rear head",
+      "kind": "portrait",
+      "tags": "head and shoulders, from behind",
+      "instruction": "close-up, (from behind:2), back of head, head and shoulders",
+      "quality_status": "quality_gate_required"
+    },
+    "body_front": {
+      "name": "Full-body front",
+      "kind": "body",
+      "tags": "full body, standing, front view",
+      "instruction": "Show one complete standing character from the front, with a neutral pose and room above the hair and below both soles.",
+      "quality_status": "standard_target"
+    },
+    "body_left": {
+      "name": "Full-body left side",
+      "kind": "body",
+      "tags": "full body, standing, from side",
+      "instruction": "Complete subject in profile facing image-right.",
+      "quality_status": "standard_target"
+    },
+    "body_back": {
+      "name": "Full-body back",
+      "kind": "body",
+      "tags": "full body, standing, from behind",
+      "instruction": "Show one complete standing character directly from behind. Keep the head facing away, with no visible face or eyes.",
+      "quality_status": "standard_target"
+    },
+    "clothing_front": {
+      "name": "Unworn outfit front",
+      "kind": "clothing",
+      "tags": "clothes, flat lay",
+      "instruction": "The outfit is flat, front View of the outfit, no human, Remove the person",
+      "quality_status": "quality_gate_required"
+    },
+    "clothing_back": {
+      "name": "Unworn outfit back",
+      "kind": "clothing",
+      "tags": "clothes, flat lay",
+      "instruction": "The outfit is flat, (from behind:2), back of the outfit, no human, Remove the person",
+      "quality_status": "quality_gate_required"
+    },
+    "hands": {
+      "name": "Paired hands",
+      "kind": "detail",
+      "tags": "hands, close-up",
+      "instruction": "Both complete hands, cropped at the wrists.",
+      "quality_status": "quality_gate_required"
+    },
+    "feet": {
+      "name": "Paired feet or footwear",
+      "kind": "detail",
+      "tags": "feet, close-up",
+      "instruction": "Show one complete left foot and one complete right foot, or their described footwear. Include the complete soles and visible boot shafts.",
+      "quality_status": "quality_gate_required"
+    }
+  },
+  "styles": {
+    "none": "",
+    "anime": "Anime illustration with controlled linework and cel shading.",
+    "photo": "Photographic rendering with realistic surface textures and soft, even studio light.",
+    "realistic_painting": "Realistic painted forms with readable material rendering.",
+    "semi_realistic_anime": "Anime-derived features with softly modeled, semi-realistic shading.",
+    "oil_painting": "Oil-painted rendering with visible, controlled brushwork.",
+    "watercolor": "Watercolor pigment washes with clearly defined silhouettes.",
+    "gouache": "Opaque gouache color shapes with readable contours.",
+    "colored_pencil": "Colored-pencil rendering with visible strokes and clearly defined forms.",
+    "3d": "Three-dimensional rendered surfaces with coherent materials and soft studio lighting."
+  },
+  "backgrounds": {
+    "white": "a plain white background",
+    "light_gray": "a plain light-gray background"
+  },
+  "setting_visibility": {
+    "hand_state": [
+      "body_front",
+      "body_left",
+      "body_back",
+      "hands"
+    ],
+    "footwear_state": [
+      "body_front",
+      "body_left",
+      "body_back",
+      "feet"
+    ],
+    "clothing_type": [
+      "body_front",
+      "body_left",
+      "body_back",
+      "clothing_front",
+      "clothing_back"
+    ]
+  },
+  "view_prompt_defaults": {
+    "face_front": "portrait, close-up, front view, head and shoulders",
+    "face_left": "portrait, close-up, profile, facing image-right, head and shoulders",
+    "face_right": "portrait, close-up, profile, facing image-left, head and shoulders",
+    "face_3q_left": "portrait, close-up, three-quarter view, facing image-right, head and shoulders",
+    "face_3q_right": "portrait, close-up, three-quarter view, facing image-left, head and shoulders",
+    "face_back": "close-up, (from behind:2), back of head, head and shoulders",
+    "body_front": "full body, standing, front view, neutral pose, complete subject visible",
+    "body_left": "full body, standing, profile, facing image-right, complete subject visible",
+    "body_back": "full body, standing, from behind, head facing away, complete subject visible",
+    "clothing_front": "The outfit is flat, front View of the outfit, no human, Remove the person",
+    "clothing_back": "unworn clothes, The outfit is flat, (from behind:2), back of the outfit, no human, Remove the person",
+    "hands": "hands, close-up, one left hand and one right hand, cropped at wrists, complete fingers",
+    "feet": "(unworn shoes:1.5), footwear only, no humans, Show one matching pair of footwear"
+  }
+}

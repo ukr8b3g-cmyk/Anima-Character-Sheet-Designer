@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "status": "pinned_metadata_verified",
+  "default_model": "pixai_v1_fp16",
+  "models": [
+    {
+      "id": "pixai_v1_fp16",
+      "label": "PixAI Tagger v1.0 · FP16",
+      "repo_id": "Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8",
+      "revision": "0800778563144a0e6fdf41ddadd84aae3cb0dbcf",
+      "precision": "fp16_fp32_io",
+      "filename": "model_fp16.onnx",
+      "display_size_decimal_mb": 993,
+      "sha256": "cd668e6760bb58ec400ce1b0286e5c9133f83b543caac6a378406b7d56f8c303",
+      "metadata": {
+        "filename": "selected_tags.csv",
+        "sha256": "a9455cbf0a910d4a3890739f2f70bd986278f4594285ef1049121a03896e2a6d",
+        "lock_required_before_inference": true,
+        "size": 804671,
+        "rows": 30877
+      },
+      "preprocess_metadata": {
+        "filename": "preprocess.json",
+        "sha256": "b6cc89f3dbeee8e97666934d812a6a6bcebe81ae4eff763da9f58f4c52cd6ed4",
+        "lock_required_before_inference": true,
+        "size": 288
+      },
+      "preprocess_revision": "pixai_v1_pil_rgb_black_1008_v1",
+      "input": {
+        "name": "input",
+        "dtype": "float32",
+        "shape": [
+          1,
+          3,
+          1008,
+          1008
+        ]
+      },
+      "output": {
+        "name": "prediction",
+        "dtype": "float32",
+        "shape": [
+          1,
+          30877
+        ],
+        "activation": "probability_sigmoid_in_graph"
+      },
+      "categories": {
+        "0": "general",
+        "1": "style",
+        "3": "copyright",
+        "4": "character",
+        "5": "meta",
+        "9": "rating"
+      },
+      "thresholds": {
+        "general": 0.17,
+        "style": 0.15,
+        "copyright": 0.24,
+        "character": 0.27,
+        "meta": 0.17,
+        "rating": 0.41
+      },
+      "download_url": "https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/model_fp16.onnx",
+      "size": 992916002
+    },
+    {
+      "id": "wd_eva02_large_v3",
+      "label": "WD EVA02 Large v3 · FP32",
+      "repo_id": "SmilingWolf/wd-eva02-large-tagger-v3",
+      "revision": "b25b82a03f7282e41aa2f257a52c7583b710bd1c",
+      "precision": "fp32",
+      "filename": "model.onnx",
+      "display_size_decimal_mb": 1260,
+      "sha256": "9e768793060c7939b277ccb382783e8670e8a042d29d77aa736be0c8cc898bfc",
+      "metadata": {
+        "filename": "selected_tags.csv",
+        "sha256": "298633d94d0031d2081c0893f29c82eab7f0df00b08483ba8f29d1e979441217",
+        "rows": 10861,
+        "lock_required_before_inference": true,
+        "size": 308468
+      },
+      "preprocess_revision": "wd_v3_pil_white_square_bgr_448_v1",
+      "input": {
+        "name": "input",
+        "dtype": "float32",
+        "shape": [
+          1,
+          448,
+          448,
+          3
+        ]
+      },
+      "output": {
+        "name": "output",
+        "dtype": "float32",
+        "last_axis": "locked_csv_row_count",
+        "activation": "probability",
+        "shape": [
+          1,
+          10861
+        ]
+      },
+      "categories": {
+        "0": "general",
+        "4": "character",
+        "9": "rating"
+      },
+      "thresholds": {
+        "general": 0.35,
+        "character": 0.85,
+        "rating": 0.5
+      },
+      "threshold_note": "Product starting settings, not the official P=R evaluation threshold 0.5296.",
+      "download_url": "https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3/resolve/b25b82a03f7282e41aa2f257a52c7583b710bd1c/model.onnx",
+      "size": 1260435999
+    }
+  ],
+  "download_default": false,
+  "never_auto_switch_precision": true,
+  "never_move_booru_models": true
+}

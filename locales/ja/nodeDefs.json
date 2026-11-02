@@ -1,0 +1,265 @@
+{
+  "AnimaImageTagger": {
+    "inputs": {
+      "use_image": {
+        "name": "画像を使用",
+        "tooltip": "OFFはmanual_prompt、ONはimage入力を使います。"
+      },
+      "model_id": {
+        "name": "Taggerモデル",
+        "tooltip": "PixAI FP16（推奨・既定）・WD FP32を明示選択します。解析デバイスのAutoはモデルを変更しません。"
+      },
+      "device": {
+        "name": "解析デバイス",
+        "tooltip": "AutoはCUDAとCPU補助処理を試し、利用できない場合は同じモデルでCPU解析します。CUDA指定はGPUプロバイダー必須。GPUではINT8がFP16より遅い場合があります。"
+      },
+      "config_json": {
+        "name": "Tagger設定JSON",
+        "tooltip": "詳細設定の保存データです。"
+      },
+      "allow_download": {
+        "name": "モデル取得を許可",
+        "tooltip": "固定版の不足モデルだけ取得します。既定OFF。"
+      },
+      "manual_prompt": {
+        "name": "テキスト入力",
+        "tooltip": "String (Multiline)などを接続。画像OFFでは原文をそのまま使います。"
+      },
+      "image": {
+        "name": "画像入力",
+        "tooltip": "標準Load Imageを接続。画像ONの場合だけ必要です。"
+      },
+      "mask": {
+        "name": "透過マスク（任意）",
+        "tooltip": "任意の同寸MASK。1の部分を白にします。透過が必要な場合にLoad ImageのMASKを接続します。"
+      },
+      "include_character": {
+        "name": "キャラクター名を採用",
+        "tooltip": "顔・全身へ検出したキャラクター名を追加します。既定OFF。既知の衣装が混ざる場合があります。"
+      },
+      "include_copyright": {
+        "name": "作品名を採用",
+        "tooltip": "顔・全身へ検出した作品名を追加します。既定OFF。外観が変わる場合があります。"
+      },
+      "allow_multiple_subjects": {
+        "name": "複数の被写体を許可",
+        "tooltip": "複数被写体の解析を許可します。特徴が混ざる場合があります。既定OFF。"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "プロンプト",
+        "tooltip": "手動原文または採用画像タグ。Designerのpromptへ接続します。"
+      },
+      "1": {
+        "name": "外観分類JSON",
+        "tooltip": "promptと一緒にDesignerへ接続し、ビューに応じてタグを分けます。"
+      },
+      "2": {
+        "name": "解析タグJSON",
+        "tooltip": "全rawスコアと除外・未分類候補。Preview Anyで確認できます。"
+      },
+      "3": {
+        "name": "診断情報",
+        "tooltip": "実デバイス、キャッシュ、所要時間。描画プロンプトには追加しません。"
+      }
+    },
+    "description": "接続したテキストとローカル画像タグを切り替えます。内部ファイル・本文欄はありません。"
+  },
+  "AnimaCharacterSheetDesigner": {
+    "inputs": {
+      "state_json": {
+        "name": "保存設定JSON",
+        "tooltip": "Designer画面の保存設定。"
+      },
+      "base_seed": {
+        "name": "基準seed",
+        "tooltip": "各ビューのseedを決める基準値。"
+      },
+      "prompt": {
+        "name": "テキスト入力",
+        "tooltip": "String (Multiline)などを接続。画像OFFでは原文をそのまま使います。"
+      },
+      "profile_json": {
+        "name": "外観分類JSON",
+        "tooltip": "promptと一緒にDesignerへ接続し、ビューに応じてタグを分けます。"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "ポジティブ",
+        "tooltip": "ビュー別ポジティブのリスト。"
+      },
+      "1": {
+        "name": "幅",
+        "tooltip": "各ビューの生成幅。"
+      },
+      "2": {
+        "name": "高さ",
+        "tooltip": "各ビューの生成高。"
+      },
+      "3": {
+        "name": "seed",
+        "tooltip": "各ビューのseed。"
+      },
+      "4": {
+        "name": "配置計画",
+        "tooltip": "Assembleのsheet_planへ接続。"
+      },
+      "5": {
+        "name": "ビュー記録",
+        "tooltip": "Assembleのview_recordsへ接続。"
+      }
+    }
+  },
+  "AnimaCharacterSheetAssemble": {
+    "inputs": {
+      "images": {
+        "name": "生成画像",
+        "tooltip": "指定順で生成したビュー画像。"
+      },
+      "view_records": {
+        "name": "ビュー記録",
+        "tooltip": "Assembleのview_recordsへ接続。"
+      },
+      "sheet_plan": {
+        "name": "配置計画",
+        "tooltip": "Assembleのsheet_planへ接続。"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "合成シート",
+        "tooltip": "合成したキャラクターシート。"
+      },
+      "1": {
+        "name": "合成情報",
+        "tooltip": "配置と指定生成情報。画質の測定値ではありません。"
+      }
+    }
+  },
+  "AnimaSheetInputs": {
+    "inputs": {
+      "manual_prompt": {
+        "name": "テキスト入力",
+        "tooltip": "String (Multiline)などを接続。画像OFFでは原文をそのまま使います。"
+      },
+      "image": {
+        "name": "画像入力",
+        "tooltip": "標準Load Imageを接続。画像ONの場合だけ必要です。"
+      },
+      "device": {
+        "name": "解析デバイス",
+        "tooltip": "AutoはCUDAとCPU補助処理を試し、利用できない場合は同じモデルでCPU解析します。CUDA指定はGPUプロバイダー必須。GPUではINT8がFP16より遅い場合があります。"
+      },
+      "model_id": {
+        "name": "Taggerモデル",
+        "tooltip": "PixAI FP16（推奨・既定）・WD FP32を明示選択します。解析デバイスのAutoはモデルを変更しません。"
+      },
+      "include_character": {
+        "name": "キャラクター名を採用",
+        "tooltip": "顔・全身へ検出したキャラクター名を追加します。既定OFF。既知の衣装が混ざる場合があります。"
+      },
+      "include_copyright": {
+        "name": "作品名を採用",
+        "tooltip": "顔・全身へ検出した作品名を追加します。既定OFF。外観が変わる場合があります。"
+      },
+      "allow_multiple_subjects": {
+        "name": "複数の被写体を許可",
+        "tooltip": "複数被写体の解析を許可します。特徴が混ざる場合があります。既定OFF。"
+      },
+      "value": {
+        "name": "画像入力を使用",
+        "tooltip": "OFFはmanual_prompt、ONはimage入力を使います。"
+      },
+      "vae_name": {
+        "name": "vae_name",
+        "tooltip": "導入済みのモデルファイルを選択します。"
+      },
+      "clip_name": {
+        "name": "clip_name",
+        "tooltip": "導入済みのモデルファイルを選択します。"
+      },
+      "lora_name": {
+        "name": "lora_name",
+        "tooltip": "導入済みのモデルファイルを選択します。"
+      },
+      "unet_name": {
+        "name": "unet_name",
+        "tooltip": "導入済みのモデルファイルを選択します。"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "プロンプト",
+        "tooltip": "手動原文または採用画像タグ。Designerのpromptへ接続します。"
+      },
+      "1": {
+        "name": "外観分類JSON",
+        "tooltip": "promptと一緒にDesignerへ接続し、ビューに応じてタグを分けます。"
+      },
+      "2": {
+        "name": "解析タグJSON",
+        "tooltip": "全rawスコアと除外・未分類候補。Preview Anyで確認できます。"
+      },
+      "3": {
+        "name": "CLIP",
+        "tooltip": "ポジティブとネガティブを処理するテキストエンコーダー。"
+      },
+      "4": {
+        "name": "VAE",
+        "tooltip": "生成したビューを画像へ変換するVAE。"
+      },
+      "5": {
+        "name": "モデル",
+        "tooltip": "各ビューを生成する拡散モデル。"
+      }
+    }
+  },
+  "AnimaSheetRender": {
+    "inputs": {
+      "model": {
+        "name": "モデル",
+        "tooltip": "各ビューを生成する拡散モデル。"
+      },
+      "clip": {
+        "name": "クリップ",
+        "tooltip": "ポジティブとネガティブを処理するテキストエンコーダー。"
+      },
+      "vae": {
+        "name": "vae",
+        "tooltip": "生成したビューを画像へ変換するVAE。"
+      },
+      "width": {
+        "name": "幅",
+        "tooltip": "各ビューの生成幅。"
+      },
+      "height": {
+        "name": "高さ",
+        "tooltip": "各ビューの生成高。"
+      },
+      "seed": {
+        "name": "seed",
+        "tooltip": "各ビューの生成seed。"
+      },
+      "text": {
+        "name": "テキスト",
+        "tooltip": "各ビューのポジティブプロンプト。"
+      },
+      "sheet_plan": {
+        "name": "配置計画",
+        "tooltip": "Assembleのsheet_planへ接続。"
+      },
+      "view_records": {
+        "name": "ビュー記録",
+        "tooltip": "Assembleのview_recordsへ接続。"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "合成シート",
+        "tooltip": "合成したキャラクターシート。"
+      }
+    }
+  }
+}
