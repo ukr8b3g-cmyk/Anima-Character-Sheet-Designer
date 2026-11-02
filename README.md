@@ -47,7 +47,7 @@ Template settings: **LoRA 0.7 · 10 steps · CFG 1.5 · Euler / simple**, CLIP t
 
 ### Tagger models: manual download or the node's button
 
-**PixAI v1.0 FP16 is recommended and selected by default.** WD EVA02 Large v3 is an alternative. Only the selected Tagger is needed; generation model files above are separate.
+**PixAI v1.0 FP16 is recommended and selected by default for its newer data and tag coverage.** The [official PixAI v1.0 model card](https://huggingface.co/pixai-labs/pixai-tagger-v1.0) lists a May 2026 cutoff, while [WD EVA02 Large v3](https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3) lists tags through February 28, 2024. Choose **WD EVA02 Large v3** if you prefer the established WD tagging approach or its results. Only the selected Tagger is needed; generation model files above are separate.
 
 ![Select PixAI FP16 or WD](docs/images/tagger-models.png)
 

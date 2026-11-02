@@ -46,7 +46,7 @@ Anima・サブグラフに対応する新しいComfyUIを使ってください�
 
 ### Taggerモデル：手動配置か、内部ノードの取得ボタン
 
-**PixAI v1.0 FP16を推奨・既定** とし、WD EVA02 Large v3も選べます。使うTaggerだけ導入できます。上表の生成用モデルとは別です。
+**収録データ・タグの新しさを重視し、PixAI v1.0 FP16を推奨・既定** としています。[PixAI v1.0公式](https://huggingface.co/pixai-labs/pixai-tagger-v1.0)の収録範囲は2026年5月まで、[WD EVA02 Large v3](https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3)のタグは2024年2月28日までです。**従来のWD方式のタグ付けや、その結果の傾向を好む場合はWD EVA02 Large v3** を選んでください。使うTaggerだけ導入できます。上表の生成用モデルとは別です。
 
 ![PixAI FP16／WDの選択](docs/images/tagger-models.png)
 
