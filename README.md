@@ -5,6 +5,7 @@
 Create character reference sheets with **Anima** in ComfyUI. Choose up to **13 views**, generate each view independently, then assemble them into one sheet. Use a text description or convert an image into appearance tags with **PixAI Tagger v1.0 FP16** or **WD EVA02 Large v3**.
 
 The familiar sheet controls build on the author's [MOSS-Image](https://github.com/ukr8b3g-cmyk/MOSS-Image-Character-Sheet-Designer), [H3](https://github.com/ukr8b3g-cmyk/H3-Character-Sheet-Designer) and [Qwen-Image 2.1](https://github.com/ukr8b3g-cmyk/Qwen-Image-2.1-Character-Sheet-Designer) designers. Anima adds an editable **base prompt for every view** in the Prompts tab.
+<img width="1642" height="836" alt="Clip_49" src="https://github.com/user-attachments/assets/87440350-686a-4ae0-aad9-6127b9ca0930" />
 
 ![Example character sheet](docs/images/example-sheet.webp)
 
