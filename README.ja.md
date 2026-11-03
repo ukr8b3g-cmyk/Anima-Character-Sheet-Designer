@@ -66,6 +66,35 @@ Anima・サブグラフに対応する新しいComfyUIを使ってください�
 | **PixAI v1.0 FP16：推奨・既定** | [model_fp16.onnx](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/model_fp16.onnx)（992,916,002バイト）、[selected_tags.csv](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/selected_tags.csv)、[preprocess.json](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/preprocess.json) | pixai_v1_fp16 |
 | WD EVA02 Large v3 FP32：代替 | [model.onnx](https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3/resolve/b25b82a03f7282e41aa2f257a52c7583b710bd1c/model.onnx)（1,260,435,999バイト）、[selected_tags.csv](https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3/resolve/b25b82a03f7282e41aa2f257a52c7583b710bd1c/selected_tags.csv) | wd_eva02_large_v3 |
 
+#### 手動インストール：配置ディレクトリ
+
+フォルダーがなければ以下の構成で作成し、取得したファイル名は変更しないでください。**使用するTaggerだけ導入すればよく、両モデルは不要です。** 以下は標準の `ComfyUI/models` 配下の例です。共有モデルディレクトリを設定している場合は、その中の `anima_tagger` フォルダーへ同じ構成で配置します。
+
+**PixAI v1.0 FP16：推奨・既定**
+
+```text
+ComfyUI/
+└─ models/
+   └─ anima_tagger/
+      └─ pixai_v1_fp16/
+         ├─ model_fp16.onnx
+         ├─ selected_tags.csv
+         └─ preprocess.json
+```
+
+**WD EVA02 Large v3：代替**
+
+```text
+ComfyUI/
+└─ models/
+   └─ anima_tagger/
+      └─ wd_eva02_large_v3/
+         ├─ model.onnx
+         └─ selected_tags.csv
+```
+
+配置後、**Anima Image Tagger** で導入したモデルを選び、**Check model files／モデルファイルを再確認** を押します。**Model ready／モデル準備完了** になれば、選択モデルのファイル検証が完了しています。
+
 CSVはモデルの出力番号とタグ名を対応付ける専用辞書です。重みと同じ配布元のものを使い、タグ補完用の別辞書へ置き換えないでください。PixAIは [公式v1.0](https://huggingface.co/pixai-labs/pixai-tagger-v1.0) を [Mexes氏がONNXへ変換したFP16版](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8) です。FP8ではありません。INT8は廃止済みです。重みは拡張へ同梱しません。
 
 ## 基本操作：テキスト／画像の切替

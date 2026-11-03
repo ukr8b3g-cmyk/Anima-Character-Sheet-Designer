@@ -67,6 +67,35 @@ After manually installing, moving or repairing model files, click **Check model 
 | **PixAI v1.0 FP16 — recommended/default** | [model_fp16.onnx](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/model_fp16.onnx) (992,916,002 bytes), [selected_tags.csv](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/selected_tags.csv), [preprocess.json](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/preprocess.json) | pixai_v1_fp16 |
 | WD EVA02 Large v3 FP32 — alternative | [model.onnx](https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3/resolve/b25b82a03f7282e41aa2f257a52c7583b710bd1c/model.onnx) (1,260,435,999 bytes), [selected_tags.csv](https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3/resolve/b25b82a03f7282e41aa2f257a52c7583b710bd1c/selected_tags.csv) | wd_eva02_large_v3 |
 
+#### Manual installation: directory layout
+
+Create the folders below if they do not exist, and keep the downloaded filenames unchanged. **Install only your selected Tagger; both models are not required.** The paths below use the standard `ComfyUI/models` directory. If you use a configured shared models directory, use its `anima_tagger` folder instead.
+
+**PixAI v1.0 FP16 — recommended/default**
+
+```text
+ComfyUI/
+└─ models/
+   └─ anima_tagger/
+      └─ pixai_v1_fp16/
+         ├─ model_fp16.onnx
+         ├─ selected_tags.csv
+         └─ preprocess.json
+```
+
+**WD EVA02 Large v3 — alternative**
+
+```text
+ComfyUI/
+└─ models/
+   └─ anima_tagger/
+      └─ wd_eva02_large_v3/
+         ├─ model.onnx
+         └─ selected_tags.csv
+```
+
+Select the installed Tagger in **Anima Image Tagger**, then click **Check model files**. **Model ready** confirms that the selected files passed verification.
+
 Each CSV maps model output positions to tag names. Keep it paired with that model; do not substitute a tag-autocomplete dictionary. PixAI here is an unofficial **FP16 ONNX export** of [official PixAI Tagger v1.0](https://huggingface.co/pixai-labs/pixai-tagger-v1.0), distributed by [Mexes](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8). It is not FP8. INT8 is no longer supported. Weights are not bundled with the extension.
 
 ## Quick start: text or image
