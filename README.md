@@ -60,6 +60,8 @@ Choose one installation method:
 
 The screenshot shows **Model ready**, meaning the selected model is already installed. A missing model shows the download action instead. Opening the workflow does not download weights. The button verifies the pinned file size and SHA-256 and does not overwrite mismatched files. Acquired dates are shown when recorded; file modification time is a separate value. Images are analyzed locally.
 
+After manually installing, moving or repairing model files, click **Check model files** inside the Tagger. It rechecks the selected model without downloading or generating. Status is also rechecked when loading the workflow or switching models; ordinary status requests reuse completed checks for up to five seconds.
+
 | Tagger | Required files (direct links) | Folder under models/anima_tagger |
 |---|---|---|
 | **PixAI v1.0 FP16 — recommended/default** | [model_fp16.onnx](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/model_fp16.onnx) (992,916,002 bytes), [selected_tags.csv](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/selected_tags.csv), [preprocess.json](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/preprocess.json) | pixai_v1_fp16 |
@@ -97,6 +99,8 @@ The supplied template has character/series names ON and multiple subjects OFF. N
 ![View selector and presets](docs/images/view-selector.png)
 
 Choose views directly or select a preset: Standard5, Basic4, Turnaround3, Single, 7 views, Head6, Clothing front/back or All13. Clothing shape, Hands and Feet refine the relevant views.
+
+Explicit clothing/hand/footwear choices remove incompatible automatic appearance tags from the affected views. **Auto** retains the extracted outfit, including mixed garment layers. Your manual text, Part prompts, additional tags and original analysis results are preserved. These choices guide generation; they do not guarantee the exact garment or viewpoint.
 
 **Auto / Manual output size controls the finished sheet.** Each view is generated separately, and Assemble places it into the selected layout. The mannequin guide is a composition preview and is not sent to Anima. These supplied UI screenshots were captured during preview development; the released node displays v1.0.
 

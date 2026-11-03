@@ -104,6 +104,20 @@ test('Download button sends an explicit POST; installed status does not redownlo
   a.ui.setLocale('ja');assert.equal(button.label,'モデル準備完了');a.ui.dispose();
 });
 
+test('Model-file recheck uses GET from ready/missing; analysis refresh also rechecks',async()=>{
+ const a=setup();let state='ready';const calls=[];
+ a.api.fetchApi=async(path,options)=>{calls.push({path,method:options.method});return {ok:true,json:async()=>({state,completed:0,total:100})};};
+ const button=a.all().find(e=>e.tagName==='BUTTON'&&e.textContent==='Check model files');
+ assert.ok(button);button.click();await new Promise(resolve=>setImmediate(resolve));
+ assert.deepEqual(calls.at(-1),{path:'/anima_character_sheet_designer/v1/models/wd_eva02_large_v3?refresh=1',method:'GET'});
+ state='missing';button.click();await new Promise(resolve=>setImmediate(resolve));
+ assert.match(a.all().find(e=>e.className==='anima-tagger-model').textContent,/Not installed/);
+ a.all().find(e=>e.tagName==='BUTTON'&&e.textContent==='Refresh analysis / retry device').click();
+ await new Promise(resolve=>setImmediate(resolve));assert.equal(calls.at(-1).method,'GET');
+ assert.ok(calls.every(x=>x.method==='GET'));a.ui.setLocale('ja');assert.equal(button.textContent,'モデルファイルを再確認');
+ a.ui.dispose();
+});
+
 test('Template subgraph ports follow locale, save English, and retain values and user titles',async()=>{
  const en=JSON.parse(await readFile(new URL('../locales/en/nodeDefs.json',import.meta.url),'utf8'));
  const ja=JSON.parse(await readFile(new URL('../locales/ja/nodeDefs.json',import.meta.url),'utf8'));

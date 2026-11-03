@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Resolve opposing automatic lower-garment, glove and footwear tags when an explicit choice is selected. Preserve Auto, user text/additions and raw analysis.
+- Add **Check model files** with English/Japanese help; recheck without downloading. Completed status expires after five seconds, and analysis refresh also checks model readiness.
+- Align JSON/frontend output contracts with the native six output sockets; retain migration support for old workflows.
+- Add regression checks for inferred-tag precedence, real file state transitions, GET-only refresh and native output order.
+- GPU A/B comparison on ComfyUI_test used the supplied WAI-ANIMA/Turbo settings and two seeds. Lower-garment changes improved in some cases; short-trouser, detail and viewpoint variation remain.
+
 ## 1.0
 
 First public release of Anima Character Sheet Designer for ComfyUI.

@@ -65,12 +65,17 @@ def scoped_tags(p,view,state):
     result=[]
     # Explicit appearance settings win over inferred machine tags. Socks/tights remain.
     shoe_tags={t for t in POLICY['exact_allow']['feet'] if any(t==x or t.endswith('_'+x) for x in ('shoes','boots','footwear','sandals','sneakers','heels','loafers','slippers','geta','zouri','mary_janes'))}
-    glove_tags={t for t in POLICY['exact_allow']['hands'] if t=='gloves' or t.endswith('_gloves')}
+    glove_tags={t for t in POLICY['exact_allow']['hands'] if t in ('gloves','mittens') or t.endswith('_gloves')}
+    a=state['appearance']
+    lower_types={'pants':('skirt',),'skirt_robe':('pants','trousers','shorts')}.get(a['clothing_type'],())
     for g in selected:
         auto=p['groups'][g]
+        if g=='lower_outfit': auto=[t for t in auto if not any(t==kind or t.endswith('_'+kind) for kind in lower_types)]
         if g=='subject' and state['subject_kind']!='unspecified': auto=[]
         if state['appearance']['footwear_state']=='unshod': auto=[t for t in auto if t not in shoe_tags]
+        elif a['footwear_state']=='shod': auto=[t for t in auto if t!='barefoot']
         if state['appearance']['hand_state']=='bare': auto=[t for t in auto if t not in glove_tags]
+        elif a['hand_state']=='gloved': auto=[t for t in auto if t!='bare_hands']
         result.extend(auto+p['user_additions'].get(g,[]))
     if view.startswith(('face_','body_')):
         result.extend(p['identity_labels']['character']+p['identity_labels']['copyright'])

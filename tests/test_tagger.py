@@ -15,6 +15,12 @@ from anima_character_sheet.assemble import AnimaCharacterSheetAssemble as Assemb
 from anima_character_sheet import tagger_backend as backend
 
 class TaggerTests(unittest.TestCase):
+    def test_output_contract_matches_native_socket_order_and_lists(self):
+        outputs=resource('contracts/view_contract.v1.json')['outputs']
+        self.assertEqual(tuple(x['name'] for x in outputs),Designer.RETURN_NAMES)
+        self.assertEqual(tuple(x['type'] for x in outputs),Designer.RETURN_TYPES)
+        self.assertEqual(tuple(x['is_list'] for x in outputs),Designer.OUTPUT_IS_LIST)
+
     def test_only_two_models_and_pixai_default(self):
         self.assertEqual(Tagger.INPUT_TYPES()['required']['model_id'][0],['pixai_v1_fp16','wd_eva02_large_v3'])
         self.assertEqual(resource('contracts/models.v1.json')['default_model'],'pixai_v1_fp16')
@@ -124,6 +130,32 @@ class TaggerTests(unittest.TestCase):
         state['appearance']['clothing_type']='pants'
         row=compile_views(state,42,text,p)[0]['positive']
         self.assertIn('gold trim',row);self.assertIn('trousers',row);self.assertNotIn('Blank',row)
+
+    def test_explicit_choices_filter_only_opposing_automatic_tags(self):
+        tags=['1girl','blue_coat','skirt','black_skirt','pants','red_pants','shorts','belt','mittens','gloves','bare_hands','nail_polish','barefoot','boots','socks']
+        text,p,review=build_profile([dict(name=t,category=0,score=.9) for t in tags],self.cfg,self.model,'a'*64)
+        before=canonical(p);before_review=canonical(review)
+        for field,value,removed,retained in [
+            ('clothing_type','pants',['skirt','black skirt'],['blue coat','pants','belt']),
+            ('clothing_type','skirt_robe',['pants','red pants','shorts'],['blue coat','skirt','belt']),
+            ('hand_state','bare',['mittens','gloves'],['nail polish','blue coat']),
+            ('hand_state','gloved',['bare hands'],['mittens','nail polish']),
+            ('footwear_state','shod',['barefoot'],['boots','socks']),
+            ('footwear_state','unshod',['boots'],['socks','blue coat']),
+        ]:
+            with self.subTest(field=field,value=value):
+                state=copy.deepcopy(DEFAULT);state['appearance'][field]=value
+                actual=scoped_tags(p,'body_front',state).split(', ')
+                for tag in removed:self.assertNotIn(tag,actual)
+                for tag in retained:self.assertIn(tag,actual)
+        self.assertEqual(canonical(p),before);self.assertEqual(canonical(review),before_review)
+        self.assertIn('black skirt',scoped_tags(p,'body_front',DEFAULT))
+        self.cfg['scope_additions']={'hands':['mittens'],'lower_outfit':['skirt']}
+        t2,p2,_=build_profile([dict(name='blue_coat',category=0,score=.9)],self.cfg,self.model,'a'*64)
+        state=copy.deepcopy(DEFAULT);state['appearance'].update(clothing_type='pants',hand_state='bare')
+        self.assertIn('mittens',scoped_tags(p2,'hands',state));self.assertIn('skirt',scoped_tags(p2,'clothing_front',state))
+        state['views']=['body_front'];state['part_prompts']['lower_body']='skirt over trousers'
+        self.assertIn('skirt over trousers',compile_views(state,42,t2,p2)[0]['positive'])
 
     def test_multiple_checked_before_user_exclusions(self):
         self.cfg['exclude_tags']=['2girls']

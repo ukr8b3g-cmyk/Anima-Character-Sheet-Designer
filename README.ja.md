@@ -59,6 +59,8 @@ Anima・サブグラフに対応する新しいComfyUIを使ってください�
 
 画像の **Model ready／モデル準備完了** は、選択モデルが取得済みという意味です。未導入時にはダウンロード操作が表示されます。ワークフローを開くだけでは取得しません。固定版の容量・SHA-256を検査し、不一致ファイルは上書きしません。取得日時の記録がある場合は表示し、ファイル更新日時とは区別します。画像解析はローカルで行います。
 
+モデルを手動配置・移動・修復した後は、Tagger内の **Check model files／モデルファイルを再確認** を押します。ダウンロードや生成をせず、選択モデルを再検査します。ワークフロー読込時・モデル切替時も再確認し、通常の状態問い合わせでは完了済み検査を最大5秒間再利用します。
+
 | Tagger | 必要ファイル（直接リンク） | models/anima_tagger内のフォルダー |
 |---|---|---|
 | **PixAI v1.0 FP16：推奨・既定** | [model_fp16.onnx](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/model_fp16.onnx)（992,916,002バイト）、[selected_tags.csv](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/selected_tags.csv)、[preprocess.json](https://huggingface.co/Mexes/pixai-tagger-v1.0-onnx-fp32-fp16-int8/resolve/0800778563144a0e6fdf41ddadd84aae3cb0dbcf/preprocess.json) | pixai_v1_fp16 |
@@ -96,6 +98,8 @@ CSVはモデルの出力番号とタグ名を対応付ける専用辞書です�
 ![ビュー選択とプリセット](docs/images/view-selector.png)
 
 直接ビューを選ぶか、Standard5・Basic4・Turnaround3・Single・7ビュー・Head6・衣装前後・All13から選びます。Clothing shape、Hands、Feetは関連ビューの指定を調整します。
+
+衣装型・手・履物を明示すると、対応ビューで設定に反する自動外観タグを除外します。**Auto** は重ね着も含め、抽出した衣装を保持します。手動入力文・Part prompts・追加タグ・元の解析結果は保持します。生成を誘導する指定であり、衣装や向きの完全な再現を保証するものではありません。
 
 **Auto／Manualの出力サイズは完成シートの寸法** です。各ビューを別々に生成してAssembleで配置します。人形のガイドは合成配置のプレビューで、Animaへ送りません。掲載画面は開発中に提供されたもので、製品ノードの版表示はv1.0です。
 

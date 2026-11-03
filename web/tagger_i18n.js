@@ -28,6 +28,7 @@ export const TEXT={
  head_accessories:row('Head accessories','頭の装飾','Head accessories for portrait/body views.','顔・全身用の頭の装飾タグです。'),
  body_accessories:row('Body accessories','体の装飾','Accessories for full-body views. Clothing construction belongs in upper/lower clothing.','全身用の装飾タグです。衣装の構造は上衣・下衣欄へ入力します。'),
  download:row('Download selected model','選択モデルをダウンロード','Download the selected pinned model now. Verified files are reused. Progress and destination appear below. No image is uploaded. Use this button inside the Tagger node.','選択中の固定版モデルを今すぐ取得します。検証済みファイルは再利用します。進捗と保存先は下に表示します。画像は送信しません。Taggerノード内で使用するボタンです。'),
+ check_model:row('Check model files','モデルファイルを再確認','Recheck the selected model after manual installation, removal or repair. Does not download files or start generation.','手動配置・削除・修復後に選択モデルを再検査します。ダウンロードや生成は開始しません。'),
  refresh:row('Refresh analysis / retry device','解析を更新・デバイスを再試行','Recheck files and retry inference on the next run. Does not queue generation.','次回実行でファイル検証と推論を再試行します。このボタンだけでは生成を開始しません。'),
  decisions:row('Last filtering details','直近のタグ選別結果','Kept: adopted automatic tags; added: your additions; excluded: removed; review: unclassified candidates.','keptは自動採用、addedは手動追加、excludedは除外、reviewは未分類候補です。'),
 };

@@ -30,6 +30,7 @@ export function installTagger(node,app,api){
  const modelPath=el('p');modelPath.className='anima-tagger-path';
  const modelDate=el('p');modelDate.className='anima-tagger-path';
  const progress=el('progress');progress.max=1;progress.value=0;progress.hidden=true;
+ const checkModel=bind(el('button'),'check_model');checkModel.type='button';
  let modelState=null,modelError='',timer=null,requestVersion=0,requestedModel=null;
  const downloadButton=node.addWidget?.('button','download_model',null,()=>refreshModel(true),{serialize:false});
  if(downloadButton){downloadButton.serialize=false;downloadButton.serializeValue=()=>undefined;}
@@ -49,12 +50,12 @@ export function installTagger(node,app,api){
   }
   node.setDirtyCanvas?.(true,true);
  }
- async function refreshModel(download=false){
+ async function refreshModel(download=false,recheck=false){
   if(disposed||!api.fetchApi)return;
   if(download&&['checking','downloading','verifying','ready'].includes(modelState?.state))return;
   clearTimeout(timer);const version=++requestVersion,model=widgets.model_id?.value;requestedModel=model;
   try{
-   const response=await api.fetchApi(`/anima_character_sheet_designer/v1/models/${encodeURIComponent(model)}${download?'/download':''}`,{method:download?'POST':'GET',signal:abort.signal});
+   const response=await api.fetchApi(`/anima_character_sheet_designer/v1/models/${encodeURIComponent(model)}${download?'/download':recheck?'?refresh=1':''}`,{method:download?'POST':'GET',signal:abort.signal});
    if(!response.ok)throw new Error(response.status===404?DOWNLOAD[locale].restart:`HTTP ${response.status}`);
    const data=await response.json();if(disposed||version!==requestVersion||model!==widgets.model_id?.value)return;
    modelState=data;modelError='';renderModel();
@@ -100,10 +101,11 @@ export function installTagger(node,app,api){
   for(const {input,set,kind} of fields){if(kind==='number'&&!input.checkValidity())throw new Error(STATUS[locale].numeric);set(next,kind==='checkbox'?input.checked:input.value);}
   commitWidget(canonical,JSON.stringify(next));draft=false;lastRaw=canonical.value;
  }
- function sync(){if(disposed)return;syncing=true;try{if(canonical.value!==lastRaw){const c=JSON.parse(canonical.value);for(const f of fields){const v=f.get(c);if(f.kind==='checkbox')f.input.checked=!!v;else f.input.value=v??'';}lastRaw=canonical.value;draft=false;}if(requestedModel!==widgets.model_id?.value){modelState=null;modelError='';refreshModel();}}catch(error){statusKey='invalid';errorText=error.message;lastMessage=null;renderStatus();}finally{syncing=false;}}
+ function sync(){if(disposed)return;syncing=true;try{if(canonical.value!==lastRaw){const c=JSON.parse(canonical.value);for(const f of fields){const v=f.get(c);if(f.kind==='checkbox')f.input.checked=!!v;else f.input.value=v??'';}lastRaw=canonical.value;draft=false;}if(requestedModel!==widgets.model_id?.value){modelState=null;modelError='';refreshModel(false,true);}}catch(error){statusKey='invalid';errorText=error.message;lastMessage=null;renderStatus();}finally{syncing=false;}}
  root.addEventListener('compositionstart',()=>composing=true,{signal:abort.signal});
  root.addEventListener('compositionend',()=>{composing=false;draft=true;flush();},{signal:abort.signal});
- refresh.addEventListener('click',()=>{flush();const c=JSON.parse(canonical.value);c.refresh_nonce++;commitWidget(canonical,JSON.stringify(c));sync();stale();},{signal:abort.signal});
+ checkModel.addEventListener('click',()=>refreshModel(false,true),{signal:abort.signal});
+ refresh.addEventListener('click',()=>{flush();const c=JSON.parse(canonical.value);c.refresh_nonce++;commitWidget(canonical,JSON.stringify(c));sync();stale();refreshModel(false,true);},{signal:abort.signal});
  const hidden=[];
  for(const name of ['config_json','allow_download']){const w=widgets[name];if(!w)continue;hidden.push([w,w.hidden]);w.hidden=true;if(w.element)w.element.hidden=true;}
  const widget=node.addDOMWidget('anima_tagger_ui','div',root,{serialize:false,hideOnZoom:false,getMinHeight:()=>240,getHeight:()=>'100%',onDraw:drawn=>{drawn.width=undefined;}});widget.serializeValue=()=>undefined;widget.serialize=false;

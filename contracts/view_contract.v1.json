@@ -332,11 +332,6 @@
       "is_list": true
     },
     {
-      "name": "legacy_image_unused",
-      "type": "IMAGE",
-      "is_list": false
-    },
-    {
       "name": "sheet_plan",
       "type": "STRING",
       "is_list": false
