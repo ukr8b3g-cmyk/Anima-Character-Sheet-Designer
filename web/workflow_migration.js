@@ -1,10 +1,51 @@
+function migrateModelValue(node, index, name) {
+ if (Array.isArray(node.widgets_values) && node.widgets_values[index] === 'pixai_v1_int8') {
+  node.widgets_values[index] = 'pixai_v1_fp16';
+ }
+ if (node.widgets_values_named?.[name] === 'pixai_v1_int8') {
+  node.widgets_values_named[name] = 'pixai_v1_fp16';
+ }
+}
+
+// Follow the promoted input to its actual widget, including nested subgraphs.
+// Names/labels alone cannot establish that a third-party model_id belongs to us.
+function promotedWidget(graph, slot, definitions, visited = new Set()) {
+ const key = `${graph.id}:${slot}`;
+ if (visited.has(key)) return null;
+ visited.add(key);
+ const input = graph.inputs?.[slot];
+ for (const raw of graph.links ?? []) {
+  const [id, origin, originSlot, target, targetSlot] = Array.isArray(raw)
+   ? raw : [raw.id, raw.origin_id, raw.origin_slot, raw.target_id, raw.target_slot];
+  if (origin !== graph.inputNode?.id || originSlot !== slot || !input?.linkIds?.includes(id)) continue;
+  const node = graph.nodes?.find(n => n.id === target);
+  if (!node) continue;
+  const nested = definitions.get(node.type);
+  if (nested) return promotedWidget(nested, targetSlot, definitions, visited);
+  const widget = node.inputs?.[targetSlot]?.widget;
+  if (widget) return {isModel: node.type === 'AnimaImageTagger' && widget.name === 'model_id'};
+ }
+ return null;
+}
+
 // Migrate only this package's retired sockets/widgets; preserve node titles/settings.
-export function migrateAnimaWorkflow(data){
- for(const graph of data.definitions?.subgraphs??[])migrateAnimaWorkflow(graph);
+export function migrateAnimaWorkflow(data, definitions = new Map()){
+ for (const graph of data.definitions?.subgraphs ?? []) definitions.set(graph.id, graph);
+ for(const graph of data.definitions?.subgraphs??[])migrateAnimaWorkflow(graph, definitions);
  for(const node of data.nodes??[]){
-  // Retired model IDs in promoted widgets also migrate; node titles stay intact.
-  if(Array.isArray(node.widgets_values))node.widgets_values=node.widgets_values.map(v=>v==='pixai_v1_int8'?'pixai_v1_fp16':v);
-  if(node.widgets_values_named?.model_id==='pixai_v1_int8')node.widgets_values_named.model_id='pixai_v1_fp16';
+  if (node.type === 'AnimaImageTagger') migrateModelValue(node, 1, 'model_id');
+  const definition = definitions.get(node.type);
+  if (definition) {
+   // ComfyUI serializes promoted values in definition-input order, omitting
+   // ordinary sockets. Instance inputs can omit unconnected promoted slots.
+   let widgetIndex = 0;
+   for (const [slot, input] of (definition.inputs ?? []).entries()) {
+    const widget = promotedWidget(definition, slot, definitions);
+    if (!widget) continue;
+    if (widget.isModel) migrateModelValue(node, widgetIndex, input.name);
+    widgetIndex++;
+   }
+  }
   // A native node-definition refresh can rename the first six old sockets
   // before saving, leaving a duplicate view_records socket at index 6.
   const refreshed=node.outputs?.length===7&&node.outputs[4]?.name==='sheet_plan'&&node.outputs[5]?.name==='view_records'&&node.outputs[6]?.name==='view_records';
