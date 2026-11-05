@@ -175,7 +175,7 @@ export function createDesignerUI({controller, locale = 'ja', compatibilityWarnin
   const partDrafts = new Map(); let selectedPart = PART_IDS[0], activeTab = 'layout';
   const drafts = new Map(); let customHeight = false; let localError = null, lastRaw = Symbol(), lastPreviewKey = null; let external = false, token = null, partComposing = false;
   const header = element('div', 'anima-intro'), intro = element('span'), count = element('span', 'anima-count'); header.append(intro, count);
-  const version = element('span', 'anima-node-version', 'v1.0'); header.prepend(version);
+  const version = element('span', 'anima-node-version', 'v1.0.1'); header.prepend(version);
   const cards = element('div', 'anima-cards'), cardMap = new Map();
   const headRow = element('div', 'anima-card-row anima-head-row'), bodyRow = element('div', 'anima-card-row anima-body-row');
   if (multiReference) cards.append(headRow, bodyRow);

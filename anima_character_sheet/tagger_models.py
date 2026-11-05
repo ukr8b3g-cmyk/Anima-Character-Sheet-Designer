@@ -1,4 +1,4 @@
-"""Pinned model discovery and opt-in acquisition. Loaded only in image mode."""
+"""Pinned model discovery and selected-model acquisition in image mode."""
 import csv
 import hashlib
 import json
@@ -10,6 +10,7 @@ from .state import fail
 _verified={}
 _refresh={}
 _lock=RLock()
+_download_lock=RLock()
 
 def interrupt():
     try: from comfy.model_management import throw_exception_if_processing_interrupted
@@ -56,6 +57,11 @@ def model_files(model,allow_download=False,refresh=False):
     return download_model(model)
 
 def download_model(model,progress=None):
+    # UI preparation and queued inference share one acquisition path.
+    with _download_lock:
+        return _download_model(model,progress)
+
+def _download_model(model,progress=None):
     """Explicit acquisition of manifest-pinned files; never replace existing weights."""
     from urllib.request import Request, urlopen
     own,_=roots(); required=required_files(model)

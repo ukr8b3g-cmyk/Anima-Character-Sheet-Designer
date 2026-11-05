@@ -23,7 +23,7 @@ class AnimaImageTagger:
     FUNCTION='tag'
     RETURN_TYPES=('STRING','STRING','STRING','STRING')
     RETURN_NAMES=('prompt','profile_json','raw_tags_json','diagnostics')
-    DESCRIPTION='Select unchanged manual text or local image-to-tags. Images become text, not a visual reference. Downloads are opt-in.'
+    DESCRIPTION='Select unchanged manual text or local image-to-tags. Image mode downloads the selected missing Tagger model automatically. Verified files are reused.'
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -89,7 +89,7 @@ class AnimaImageTagger:
         if image is None: fail('E_IMAGE_MISSING','image','Connect Load Image to the image input. Embedded filename loading has been removed.')
         rgb=tensor_rgb(image,mask)
         image_hash=pixel_hash(rgb); refresh_model(model,cfg['refresh_nonce'])
-        directory=model_files(model,allow_download); tags=read_tags(directory,model)
+        directory=model_files(model,True); tags=read_tags(directory,model)
         probabilities,diagnostic=infer(directory,model,rgb,image_hash,device,cfg['device_id'],cfg['refresh_nonce'])
         del rgb
         scored=[dict(tag,score=float(score)) for tag,score in zip(tags,probabilities,strict=True)]

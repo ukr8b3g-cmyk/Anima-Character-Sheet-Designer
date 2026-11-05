@@ -6,6 +6,27 @@ from anima_character_sheet import tagger_download as service
 from anima_character_sheet.state import StateError
 
 class DownloadTests(unittest.TestCase):
+    def test_concurrent_acquisition_reuses_completed_files(self):
+        from concurrent.futures import ThreadPoolExecutor
+        data=b'weights';meta=b'name,category\ncoat,0\n'
+        def entry(name,content):return dict(filename=name,size=len(content),sha256=hashlib.sha256(content).hexdigest())
+        model=dict(id='fixture',repo_id='owner/repo',revision='pinned',**entry('model.onnx',data),metadata=entry('tags.csv',meta))
+        with tempfile.TemporaryDirectory() as tmp,patch.object(models,'roots',return_value=(Path(tmp),[Path(tmp)])),patch.object(models,'interrupt'),patch('urllib.request.urlopen',side_effect=[io.BytesIO(data),io.BytesIO(meta)]) as request:
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                paths=list(pool.map(lambda _:models.model_files(model,True),range(2)))
+            self.assertEqual(paths[0],paths[1]);self.assertEqual(request.call_count,2)
+            self.assertEqual(list(paths[0].glob('*.part')),[])
+
+    def test_image_execution_acquires_selected_model_but_manual_never_does(self):
+        from anima_character_sheet.tagger_node import AnimaImageTagger
+        with patch.object(models,'model_files',side_effect=RuntimeError('download boundary')) as acquire,patch.object(models,'interrupt'),patch.object(models,'refresh_model'),patch('anima_character_sheet.image_utils.tensor_rgb',return_value=object()),patch('anima_character_sheet.image_utils.pixel_hash',return_value='fixture'):
+            node=AnimaImageTagger()
+            node.tag(use_image=False,manual_prompt='manual prompt');acquire.assert_not_called()
+            for model in ('pixai_v1_fp16','wd_eva02_large_v3'):
+                with self.assertRaisesRegex(RuntimeError,'download boundary'):node.tag(use_image=True,model_id=model,image=object(),allow_download=False)
+                self.assertEqual(acquire.call_args.args[0]['id'],model)
+                self.assertIs(acquire.call_args.args[1],True)
+
     def test_recheck_and_expiry_follow_real_file_install_remove_and_repair(self):
         class ImmediateThread:
             def __init__(self,target,args,**kwargs): self.target=target;self.args=args

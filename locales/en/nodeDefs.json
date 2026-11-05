@@ -3,15 +3,15 @@
     "inputs": {
       "use_image": {
         "name": "Use image",
-        "tooltip": "OFF: connected manual_prompt. ON: connected image."
+        "tooltip": "OFF: use connected text without a Tagger. ON: use the image and automatically download missing files for the selected Tagger."
       },
       "model_id": {
         "name": "Tagger model",
-        "tooltip": "Select a model explicitly: PixAI FP16 (recommended default) or WD FP32. Auto device never changes this model."
+        "tooltip": "PixAI FP16 is recommended/default; WD FP32 is an alternative. With Use Image Input ON, missing files for only this model download automatically. Verified files are reused."
       },
       "device": {
         "name": "Analysis device",
-        "tooltip": "Auto tries CUDA with CPU auxiliary operations, then the same model on CPU if unavailable. CUDA requires the GPU provider. INT8 may be slower than FP16 on GPU."
+        "tooltip": "Auto tries CUDA with CPU auxiliary operations, then the same model on CPU if unavailable. CUDA requires the GPU provider. This choice does not trigger downloads or change the model."
       },
       "config_json": {
         "name": "Tagger settings JSON",
@@ -19,7 +19,7 @@
       },
       "allow_download": {
         "name": "Allow model download",
-        "tooltip": "Download only pinned missing model files. Default OFF."
+        "tooltip": "Legacy workflow field. Image mode now acquires the selected missing model automatically."
       },
       "manual_prompt": {
         "name": "Text input",
@@ -150,11 +150,11 @@
       },
       "device": {
         "name": "Analysis device",
-        "tooltip": "Auto tries CUDA with CPU auxiliary operations, then the same model on CPU if unavailable. CUDA requires the GPU provider. INT8 may be slower than FP16 on GPU."
+        "tooltip": "Auto tries CUDA with CPU auxiliary operations, then the same model on CPU if unavailable. CUDA requires the GPU provider. This choice does not trigger downloads or change the model."
       },
       "model_id": {
         "name": "Tagger model",
-        "tooltip": "Select a model explicitly: PixAI FP16 (recommended default) or WD FP32. Auto device never changes this model."
+        "tooltip": "PixAI FP16 is recommended/default; WD FP32 is an alternative. With Use Image Input ON, missing files for only this model download automatically. Verified files are reused."
       },
       "include_character": {
         "name": "Include character names",
@@ -170,7 +170,7 @@
       },
       "value": {
         "name": "Use Image Input",
-        "tooltip": "OFF: connected manual_prompt. ON: connected image."
+        "tooltip": "OFF: use connected text without a Tagger. ON: use the image and automatically download missing files for the selected Tagger."
       },
       "vae_name": {
         "name": "vae_name",

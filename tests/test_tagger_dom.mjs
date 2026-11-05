@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {installTagger, DEFAULT_CONFIG, NATIVE_FLAGS} from '../web/tagger.js';
 import {bindNodeLabels} from '../web/node_labels.js';
 import {readFile} from 'node:fs/promises';
+import {taggerSelection} from '../web/tagger_inputs.js';
 
 // Small DOM boundary: exercise persistence/lifecycle rather than browser layout.
 class Element extends EventTarget {
@@ -26,6 +27,41 @@ function setup(saved){
   const config=()=>JSON.parse(node.widgets.find(w=>w.name==='config_json').value);
   return {node,ui,api,root,all,field,config,changes:()=>changes,resizeCalls:()=>resizeCalls};
 }
+
+test('Image selection acquires only a missing selected model; device and ready reuse do not download',async()=>{
+ const a=setup();const calls=[];const ready=new Set();
+ a.api.fetchApi=async(path,options)=>{calls.push({path,method:options.method});const model=path.split('/models/')[1].split(/[/?]/)[0];if(options.method==='POST')ready.add(model);return {ok:true,json:async()=>({state:ready.has(model)?'ready':'missing',completed:0,total:100})};};
+ const settle=()=>new Promise(resolve=>setImmediate(resolve));
+ const set=(key,value)=>{const w=a.node.widgets.find(w=>w.name===key);w.value=value;w.callback?.(value);a.ui.sync();};
+ a.ui.sync();await settle();assert.equal(calls.filter(c=>c.method==='POST').length,0);
+ set('model_id','pixai_v1_fp16');await settle();assert.equal(calls.filter(c=>c.method==='POST').length,0);
+ set('use_image',true);await settle();assert.deepEqual(calls.filter(c=>c.method==='POST').map(c=>c.path),['/anima_character_sheet_designer/v1/models/pixai_v1_fp16/download']);
+ const count=calls.length;set('device','cuda');await settle();assert.equal(calls.length,count);
+ set('use_image',false);await settle();set('use_image',true);await settle();assert.equal(calls.filter(c=>c.method==='POST').length,1);
+ set('model_id','wd_eva02_large_v3');await settle();assert.equal(calls.filter(c=>c.method==='POST').length,2);
+ a.ui.dispose();
+});
+
+test('Automatic acquisition stops on errors and model-file recheck stays read-only',async()=>{
+ const a=setup({use_image:true});const calls=[];
+ a.api.fetchApi=async(path,options)=>{calls.push(options.method);return {ok:true,json:async()=>({state:options.method==='POST'?'error':'missing',error:'fixture',completed:0,total:100})};};
+ a.ui.sync();await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls,['GET','POST']);
+ a.ui.sync();await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls,['GET','POST']);
+ a.all().find(e=>e.textContent==='Check model files').click();await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls,['GET','POST','GET']);a.ui.dispose();
+});
+
+test('Promoted subgraph inputs override stale inner widgets without guessing computed inputs',()=>{
+ const widget=(name,value)=>({name,value});
+ const tagger={id:20,inputs:[{name:'use_image',link:2},{name:'model_id',link:3}],widgets:[widget('use_image',false),widget('model_id','wd_eva02_large_v3')]};
+ const primitive={id:1,type:'PrimitiveBoolean',inputs:[{name:'value',link:1}],widgets:[widget('value',false)]};
+ const inner={nodes:[primitive,tagger],inputNode:{id:-10},links:{1:{origin_id:-10,origin_slot:0},2:{origin_id:1,origin_slot:0},3:{origin_id:-10,origin_slot:1}},getNodeById(id){return this.nodes.find(n=>n.id===id);}};
+ const host={subgraph:inner,inputs:[{name:'value',widget:{name:'value'}},{name:'model_id',widget:{name:'model_id'}}],widgets:[widget('value',true),widget('model_id','pixai_v1_fp16')]};
+ const root={nodes:[host]};tagger.graph=inner;
+ assert.deepEqual(taggerSelection(tagger,{graph:root}),{model:'pixai_v1_fp16',useImage:true});
+ host.widgets[1].value='wd_eva02_large_v3';assert.equal(taggerSelection(tagger,{graph:root}).model,'wd_eva02_large_v3');
+ host.widgets[0].value=false;assert.equal(taggerSelection(tagger,{graph:root}).useImage,false);
+ primitive.type='ComputedBoolean';assert.equal(taggerSelection(tagger,{graph:root}).useImage,false);
+});
 test('Tagger drafts serialize, reload and clone without a second visual widget',()=>{
   const a=setup();const input=a.field('Exclude raw tags');input.value='blue_hair, blue_hair\noutdoors';input.dispatchEvent(new Event('input'));
   a.node.serialize();assert.deepEqual(a.config().exclude_tags,['blue_hair','outdoors']);assert.equal(a.changes(),1);

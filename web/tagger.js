@@ -1,6 +1,7 @@
 import {graphTransaction} from './integration.js';
 import {getLocale,subscribeLocale} from './controller.js';
 import {STATUS,DOWNLOAD,words} from './tagger_i18n.js';
+import {taggerSelection} from './tagger_inputs.js';
 export const GROUPS=['subject','hair','face','body','upper_outfit','lower_outfit','hands','feet','head_accessories','body_accessories'];
 export const DEFAULT_CONFIG={schema_version:1,kind:'anima_tagger_config',thresholds:{general:null,character:null,style:null,copyright:null,meta:null,rating:null},include_character:false,include_copyright:false,exclude_tags:[],scope_additions:{},multi_subject_policy:'block',max_tags:128,device_id:0,refresh_nonce:0};
 export function splitTags(text){return [...new Set(text.split(/[,\n]+/).map(t=>t.trim()).filter(Boolean))];}
@@ -12,7 +13,7 @@ export function migrateTaggerControls(node,info){
  const model=node.widgets.find(w=>w.name==='model_id');if(model?.value==='pixai_v1_int8')model.value='pixai_v1_fp16';
  const serial=node.widgets.filter(w=>w.serialize!==false);
  for(const key of NATIVE_FLAGS){const widget=serial.find(w=>w.name===key);if(widget&&typeof saved[serial.indexOf(widget)]!=='boolean')widget.value=key==='allow_multiple_subjects'?config.multi_subject_policy==='allow_with_warning':config[key];}
- // Acquisition is now a deliberate button action, not a saved permission.
+ // Legacy permission is retained for workflow compatibility, not acquisition policy.
  const legacy=node.widgets.find(w=>w.name==='allow_download');if(legacy)legacy.value=false;
 }
 export function installTagger(node,app,api){
@@ -31,7 +32,8 @@ export function installTagger(node,app,api){
  const modelDate=el('p');modelDate.className='anima-tagger-path';
  const progress=el('progress');progress.max=1;progress.value=0;progress.hidden=true;
  const checkModel=bind(el('button'),'check_model');checkModel.type='button';
- let modelState=null,modelError='',timer=null,requestVersion=0,requestedModel=null;
+ let modelState=null,modelError='',timer=null,requestVersion=0,requestedModel=null,selectionKey='',attempted=false;
+ const selection=()=>taggerSelection(node,app);
  const downloadButton=node.addWidget?.('button','download_model',null,()=>refreshModel(true),{serialize:false});
  if(downloadButton){downloadButton.serialize=false;downloadButton.serializeValue=()=>undefined;}
  function renderModel(){
@@ -39,7 +41,7 @@ export function installTagger(node,app,api){
   const state=modelError?'unavailable':s?.state||'checking';
   const bytes=s?`${(s.completed/1e6).toFixed(1)} / ${(s.total/1e6).toFixed(1)} MB`:'';
   const percent=s?.total?Math.floor(100*s.completed/s.total):0;
-  modelInfo.textContent=`${widgets.model_id?.value} · ${t[state]||state}${s?' · '+bytes:''}${modelError?' — '+modelError:s?.error?' — '+s.error:''}`;
+  modelInfo.textContent=`${selection().model??''} · ${t[state]||state}${s?' · '+bytes:''}${modelError?' — '+modelError:s?.error?' — '+s.error:''}`;
   modelPath.textContent=s?.path||'';modelPath.title=t.path;
   const date=value=>{const d=new Date(value);return Number.isFinite(d.getTime())?d.toLocaleString(locale==='ja'?'ja-JP':'en-US'):t.unknown;};
   modelDate.textContent=s?.state==='ready'?`${t.downloaded}: ${s.downloaded_at?date(s.downloaded_at):t.unknown}${s.file_modified_at?' · '+t.modified+': '+date(s.file_modified_at):''}`:'';
@@ -50,16 +52,19 @@ export function installTagger(node,app,api){
   }
   node.setDirtyCanvas?.(true,true);
  }
- async function refreshModel(download=false,recheck=false){
+ async function refreshModel(download=false,recheck=false,automatic=false){
   if(disposed||!api.fetchApi)return;
   if(download&&['checking','downloading','verifying','ready'].includes(modelState?.state))return;
-  clearTimeout(timer);const version=++requestVersion,model=widgets.model_id?.value;requestedModel=model;
+  const model=selection().model;if(!['pixai_v1_fp16','wd_eva02_large_v3'].includes(model))return;
+  clearTimeout(timer);const version=++requestVersion;requestedModel=model;
   try{
    const response=await api.fetchApi(`/anima_character_sheet_designer/v1/models/${encodeURIComponent(model)}${download?'/download':recheck?'?refresh=1':''}`,{method:download?'POST':'GET',signal:abort.signal});
    if(!response.ok)throw new Error(response.status===404?DOWNLOAD[locale].restart:`HTTP ${response.status}`);
-   const data=await response.json();if(disposed||version!==requestVersion||model!==widgets.model_id?.value)return;
+   const data=await response.json();if(disposed||version!==requestVersion||model!==selection().model)return;
    modelState=data;modelError='';renderModel();
-   if(['checking','downloading','verifying','busy'].includes(data.state))timer=setTimeout(()=>refreshModel(),700);
+   if(automatic&&download&&['busy','checking'].includes(data.state))attempted=false;
+   if(automatic&&data.state==='missing'&&selection().useImage&&!attempted){attempted=true;void refreshModel(true,false,true);}
+   else if(['checking','downloading','verifying','busy'].includes(data.state))timer=setTimeout(()=>refreshModel(false,false,automatic),700);
   }catch(error){if(disposed||version!==requestVersion)return;modelError=error.message;modelState=null;renderModel();}
  }
  const status=el('p');status.className='anima-tagger-execution';status.setAttribute('role','status');
@@ -101,7 +106,7 @@ export function installTagger(node,app,api){
   for(const {input,set,kind} of fields){if(kind==='number'&&!input.checkValidity())throw new Error(STATUS[locale].numeric);set(next,kind==='checkbox'?input.checked:input.value);}
   commitWidget(canonical,JSON.stringify(next));draft=false;lastRaw=canonical.value;
  }
- function sync(){if(disposed)return;syncing=true;try{if(canonical.value!==lastRaw){const c=JSON.parse(canonical.value);for(const f of fields){const v=f.get(c);if(f.kind==='checkbox')f.input.checked=!!v;else f.input.value=v??'';}lastRaw=canonical.value;draft=false;}if(requestedModel!==widgets.model_id?.value){modelState=null;modelError='';refreshModel(false,true);}}catch(error){statusKey='invalid';errorText=error.message;lastMessage=null;renderStatus();}finally{syncing=false;}}
+ function sync(){if(disposed)return;syncing=true;try{if(canonical.value!==lastRaw){const c=JSON.parse(canonical.value);for(const f of fields){const v=f.get(c);if(f.kind==='checkbox')f.input.checked=!!v;else f.input.value=v??'';}lastRaw=canonical.value;draft=false;}const current=selection(),key=JSON.stringify(current);if(selectionKey!==key||requestedModel!==current.model){selectionKey=key;attempted=false;requestVersion++;clearTimeout(timer);modelState=null;modelError='';refreshModel(false,true,current.useImage);}}catch(error){statusKey='invalid';errorText=error.message;lastMessage=null;renderStatus();}finally{syncing=false;}}
  root.addEventListener('compositionstart',()=>composing=true,{signal:abort.signal});
  root.addEventListener('compositionend',()=>{composing=false;draft=true;flush();},{signal:abort.signal});
  checkModel.addEventListener('click',()=>refreshModel(false,true),{signal:abort.signal});
@@ -118,7 +123,10 @@ export function installTagger(node,app,api){
  api.addEventListener?.('execution_error',event=>{if(String(event.detail?.node_id)===String(node.id)){stale();statusKey='failed';errorText=event.detail.exception_message||'';renderStatus();}},{signal:abort.signal});
  hook('onExecuted',message=>{const s=message?.anima_tagger_status?.[0];if(!s)return;if(executionSettings!==null&&executionSettings!==settingsKey()){stale();return;}lastMessage=s;renderStatus();decisions.textContent=s.mode==='manual'?'':JSON.stringify({kept:s.groups,added:s.user_additions,labels:s.identity_labels,excluded:s.excluded,review:s.review},null,2);});
  const unsubscribe=subscribeLocale(app,setLocale);
- const dispose=()=>{if(disposed)return;disposed=true;clearTimeout(timer);abort.abort();unsubscribe();for(const undo of hooks)undo();canonical.serializeValue=priorSerialize;for(const [w,value] of hidden){w.hidden=value;if(w.element)w.element.hidden=!!value;}for(const owned of [widget,downloadButton]){const index=node.widgets?.indexOf(owned);if(index>=0){if(node.removeWidget)node.removeWidget(owned);else node.widgets.splice(index,1);}}root.remove();instances.delete(node);const previous=node.onAdded;node.onAdded=function(...args){const value=previous?.apply(this,args);node.onAdded=previous;installTagger(node,app,api);return value;};};
+ // Promoted widgets can change without invoking the inner node callback.
+ // Only a selection change makes a request; idle polling performs no network I/O.
+ const selectionTimer=setInterval(sync,700);selectionTimer.unref?.();
+ const dispose=()=>{if(disposed)return;disposed=true;clearInterval(selectionTimer);clearTimeout(timer);abort.abort();unsubscribe();for(const undo of hooks)undo();canonical.serializeValue=priorSerialize;for(const [w,value] of hidden){w.hidden=value;if(w.element)w.element.hidden=!!value;}for(const owned of [widget,downloadButton]){const index=node.widgets?.indexOf(owned);if(index>=0){if(node.removeWidget)node.removeWidget(owned);else node.widgets.splice(index,1);}}root.remove();instances.delete(node);const previous=node.onAdded;node.onAdded=function(...args){const value=previous?.apply(this,args);node.onAdded=previous;installTagger(node,app,api);return value;};};
  hook('onRemoved',dispose);
  const instance={flush,sync,dispose,setLocale};instances.set(node,instance);sync();setLocale(locale);return instance;
 }

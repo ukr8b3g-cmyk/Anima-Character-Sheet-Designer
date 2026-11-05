@@ -1,6 +1,6 @@
 [project]
 name = "anima-character-sheet-designer"
-version = "1.0"
+version = "1.0.1"
 description = "Independent Anima views from manual text or local image tags, with character sheet assembly for ComfyUI"
 requires-python = ">=3.10"
 dependencies = ["numpy", "Pillow", "jsonschema"]

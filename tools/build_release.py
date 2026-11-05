@@ -6,13 +6,13 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.0'
+VERSION = '1.0.1'
 FOLDER = 'Anima-Character-Sheet-Designer'
 DEST = ROOT / 'dist'
 DEST.mkdir(exist_ok=True)
-assert re.search(r'version\s*=\s*"1\.0"', (ROOT / 'pyproject.toml').read_text('utf8'))
-assert "__version__ = '1.0'" in (ROOT / '__init__.py').read_text('utf8')
-assert "'v1.0'" in (ROOT / 'web/ui.js').read_text('utf8')
+assert re.search(rf'version\s*=\s*"{re.escape(VERSION)}"', (ROOT / 'pyproject.toml').read_text('utf8'))
+assert f"__version__ = '{VERSION}'" in (ROOT / '__init__.py').read_text('utf8')
+assert f"'v{VERSION}'" in (ROOT / 'web/ui.js').read_text('utf8')
 files = [ROOT / p for p in ('__init__.py', 'pyproject.toml', 'requirements.txt', 'README.md',
                           'README.ja.md', 'LICENSE', 'NOTICE.md', 'CHANGELOG.md')]
 for directory in ('anima_character_sheet', 'web', 'schemas', 'locales', 'docs/images', 'examples'):

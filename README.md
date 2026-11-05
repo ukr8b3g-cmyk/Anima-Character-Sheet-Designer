@@ -1,6 +1,6 @@
-# Anima Character Sheet Designer — v1.0
+# Anima Character Sheet Designer — v1.0.1
 
-[日本語](README.ja.md) · [Download v1.0](https://github.com/ukr8b3g-cmyk/Anima-Character-Sheet-Designer/releases/tag/v1.0) · [Workflow](examples/Anima-Character-Sheet-Designer-Text-or-Image.json)
+[日本語](README.ja.md) · [Download v1.0.1](https://github.com/ukr8b3g-cmyk/Anima-Character-Sheet-Designer/releases/tag/v1.0.1) · [Workflow](examples/Anima-Character-Sheet-Designer-Text-or-Image.json)
 
 Create character reference sheets with **Anima** in ComfyUI. Choose up to **13 views**, generate each view independently, then assemble them into one sheet. Use a text description or convert an image into appearance tags with **PixAI Tagger v1.0 FP16** or **WD EVA02 Large v3**.
 
@@ -28,7 +28,7 @@ Faces, clothing, colors, accessories and unseen surfaces may differ from the sou
 2. Using **ComfyUI's Python environment**, install `requirements.txt` if those packages are missing. Image tagging also requires either `onnxruntime` for CPU, or a compatible `onnxruntime-gpu` setup for CUDA. Use one ONNX Runtime package, not both. These Python dependencies are not installed automatically by the node.
 3. Install [Save WEBP Meta](https://github.com/ukr8b3g-cmyk/ComfyUI-save-webp-meta-node), which the supplied workflow uses. The LoRA loader is a standard ComfyUI node; rgthree and Anima Ref Adapter are not required.
 4. Download the generation files listed below. Restart ComfyUI and reload the browser after installation/updates.
-5. Open the workflow JSON in `examples`, or download the **Workflow-v1.0.zip** asset from the release. That ZIP includes the supplied sample image; load it in the standard **Load Image** node, or choose your own image. Copying an image beside the JSON does not install it into ComfyUI's input directory.
+5. Open the workflow JSON in `examples`, or download the **Workflow-v1.0.1.zip** asset from the release. That ZIP includes the supplied sample image; load it in the standard **Load Image** node, or choose your own image. Copying an image beside the JSON does not install it into ComfyUI's input directory.
 
 Use a recent ComfyUI with native Anima and subgraph support. Local validation used ComfyUI 0.43.0 / frontend 1.57.4. Standard and user-assigned node titles are retained; the supplied subgraph controls follow English/Japanese locale.
 
@@ -45,20 +45,27 @@ The supplied template uses **WAI-ANIMA v1.0 (base 1.0)** and **Anima Turbo LoRA 
 
 Template settings: **LoRA 0.7 · 10 steps · CFG 1.5 · Euler / simple**, CLIP type `stable_diffusion`. The template saves WebP at quality70. These are starting settings from the supplied workflow, not guaranteed optimal settings for every model or character.
 
-### Tagger models: manual download or the node's button
+### Tagger models: automatic setup or manual installation
 
 **PixAI v1.0 FP16 is recommended and selected by default for its newer data and tag coverage.** The [official PixAI v1.0 model card](https://huggingface.co/pixai-labs/pixai-tagger-v1.0) lists a May 2026 cutoff, while [WD EVA02 Large v3](https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3) lists tags through February 28, 2024. Choose **WD EVA02 Large v3** if you prefer the established WD tagging approach or its results. Only the selected Tagger is needed; generation model files above are separate.
 
 ![Select PixAI FP16 or WD](docs/images/tagger-models.png)
 
-Choose one installation method:
+**Turn on Use Image Input, then select the Tagger model.** The selected model is checked and its missing files are downloaded automatically. This also works from the supplied parent subgraph; you do not have to open the internal Tagger to start the download.
+
+- Only the selected model is acquired: **PixAI FP16 by default**, or **WD** when selected. Valid installed files are reused, including after restarting ComfyUI.
+- **Analysis device** selects CPU/CUDA execution; changing it does not trigger a download or switch models.
+- Opening a saved workflow with **Use Image Input already ON** also starts this check. Cloning/installing the extension alone does not download weights. Text mode (OFF) needs no Tagger weights.
+- If generation starts before setup finishes, the execution path waits for the model files and verifies them before analysis. Concurrent requests do not download the same files twice.
+
+Manual installation and the internal button remain available:
 
 - **Manual:** download every file in the selected row, keep its exact name, and place it in the indicated folder under `ComfyUI/models/anima_tagger` (or your configured shared models directory).
-- **From the workflow:** open the input/model subgraph with its top-right arrow. Find **Anima Image Tagger**, select the Tagger model, then click **Download selected model**. It downloads **only the selected model**. Progress, verification, storage path and completion status appear in that node. The button cannot be promoted onto the parent subgraph in frontend1.57.4.
+- **Progress / retry:** open the input/model subgraph with its top-right arrow and find **Anima Image Tagger**. Progress, verification, storage path and completion status appear there. **Download selected model** starts or retries acquisition of only that model. The button can also prepare a model while image input is OFF.
 
 ![Internal Tagger download/status button](docs/images/tagger-download.png)
 
-The screenshot shows **Model ready**, meaning the selected model is already installed. A missing model shows the download action instead. Opening the workflow does not download weights. The button verifies the pinned file size and SHA-256 and does not overwrite mismatched files. Acquired dates are shown when recorded; file modification time is a separate value. Images are analyzed locally.
+The screenshot shows **Model ready**, meaning the selected model is already installed. Downloads verify the pinned file size and SHA-256. Mismatched existing files are reported and are **not silently overwritten**; use the matching files linked below, then recheck. Failed downloads stop and can be retried with the button. Turning image input OFF prevents new automatic requests; a download already started may finish. Acquired dates are shown when recorded; file modification time is a separate value. Images are analyzed locally.
 
 After manually installing, moving or repairing model files, click **Check model files** inside the Tagger. It rechecks the selected model without downloading or generating. Status is also rechecked when loading the workflow or switching models; ordinary status requests reuse completed checks for up to five seconds.
 
@@ -131,7 +138,7 @@ Choose views directly or select a preset: Standard5, Basic4, Turnaround3, Single
 
 Explicit clothing/hand/footwear choices remove incompatible automatic appearance tags from the affected views. **Auto** retains the extracted outfit, including mixed garment layers. Your manual text, Part prompts, additional tags and original analysis results are preserved. These choices guide generation; they do not guarantee the exact garment or viewpoint.
 
-**Auto / Manual output size controls the finished sheet.** Each view is generated separately, and Assemble places it into the selected layout. The mannequin guide is a composition preview and is not sent to Anima. These supplied UI screenshots were captured during preview development; the released node displays v1.0.
+**Auto / Manual output size controls the finished sheet.** Each view is generated separately, and Assemble places it into the selected layout. The mannequin guide is a composition preview and is not sent to Anima. These supplied UI screenshots were captured during preview development; the released node displays v1.0.1.
 
 ### Part prompts: add an appearance instruction
 
@@ -166,7 +173,9 @@ Independent generation can change identity, clothing, left/right orientation and
 
 Inputs are limited to4,000 Unicode code points /16,000 UTF-8 bytes; Part prompts1,000 and each view base prompt2,000 code points. Saved state/config is limited to64KiB. Manual output sizes remain within the installed runtime's limits and at most16,777,216 pixels. These are extension limits, not Anima token limits.
 
-Local checks: **39 Python tests +18 JavaScript tests**, UI locale switching, save/reopen and exact API-wiring comparison passed. The supplied sample produced a five-view1824×1072 WebP in44.3s on one local run; cropping and orientation/detail variation remained. This single image/seed is not a general quality or speed guarantee. See [CHANGELOG](CHANGELOG.md).
+For v1.0.1, **45 Python tests and 25 JavaScript tests** pass, including automatic acquisition, selected-model isolation, subgraph controls, error retry boundaries and concurrent file reuse. Missing-file cases use small test fixtures; existing installed model weights are not removed or downloaded again. This update does not change generation prompts or sampling, and no new GPU quality claim is made.
+
+Earlier v1.0 validation: Local checks: **39 Python tests +18 JavaScript tests**, UI locale switching, save/reopen and exact API-wiring comparison passed. The supplied sample produced a five-view1824×1072 WebP in44.3s on one local run; cropping and orientation/detail variation remained. This single image/seed is not a general quality or speed guarantee. See [CHANGELOG](CHANGELOG.md).
 
 ## License
 

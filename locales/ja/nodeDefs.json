@@ -3,15 +3,15 @@
     "inputs": {
       "use_image": {
         "name": "画像を使用",
-        "tooltip": "OFFはmanual_prompt、ONはimage入力を使います。"
+        "tooltip": "OFF：接続テキストを使い、Taggerは不要です。ON：画像を使い、選択Taggerの不足ファイルを自動取得します。"
       },
       "model_id": {
         "name": "Taggerモデル",
-        "tooltip": "PixAI FP16（推奨・既定）・WD FP32を明示選択します。解析デバイスのAutoはモデルを変更しません。"
+        "tooltip": "PixAI FP16が推奨・既定、WD FP32は代替です。画像入力ONのとき、このモデルの不足ファイルだけ自動取得します。検証済みファイルは再利用します。"
       },
       "device": {
         "name": "解析デバイス",
-        "tooltip": "AutoはCUDAとCPU補助処理を試し、利用できない場合は同じモデルでCPU解析します。CUDA指定はGPUプロバイダー必須。GPUではINT8がFP16より遅い場合があります。"
+        "tooltip": "AutoはCUDAと補助CPU演算を試し、利用できなければ同じモデルをCPUで実行します。CUDAにはGPU用Providerが必要です。この選択では取得やモデル切替を行いません。"
       },
       "config_json": {
         "name": "Tagger設定JSON",
@@ -19,7 +19,7 @@
       },
       "allow_download": {
         "name": "モデル取得を許可",
-        "tooltip": "固定版の不足モデルだけ取得します。既定OFF。"
+        "tooltip": "旧ワークフロー互換用。画像入力では選択モデルの不足ファイルを自動取得します。"
       },
       "manual_prompt": {
         "name": "テキスト入力",
@@ -150,11 +150,11 @@
       },
       "device": {
         "name": "解析デバイス",
-        "tooltip": "AutoはCUDAとCPU補助処理を試し、利用できない場合は同じモデルでCPU解析します。CUDA指定はGPUプロバイダー必須。GPUではINT8がFP16より遅い場合があります。"
+        "tooltip": "AutoはCUDAと補助CPU演算を試し、利用できなければ同じモデルをCPUで実行します。CUDAにはGPU用Providerが必要です。この選択では取得やモデル切替を行いません。"
       },
       "model_id": {
         "name": "Taggerモデル",
-        "tooltip": "PixAI FP16（推奨・既定）・WD FP32を明示選択します。解析デバイスのAutoはモデルを変更しません。"
+        "tooltip": "PixAI FP16が推奨・既定、WD FP32は代替です。画像入力ONのとき、このモデルの不足ファイルだけ自動取得します。検証済みファイルは再利用します。"
       },
       "include_character": {
         "name": "キャラクター名を採用",
@@ -170,7 +170,7 @@
       },
       "value": {
         "name": "画像入力を使用",
-        "tooltip": "OFFはmanual_prompt、ONはimage入力を使います。"
+        "tooltip": "OFF：接続テキストを使い、Taggerは不要です。ON：画像を使い、選択Taggerの不足ファイルを自動取得します。"
       },
       "vae_name": {
         "name": "vae_name",

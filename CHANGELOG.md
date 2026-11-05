@@ -1,6 +1,13 @@
 # Changelog
 
-## Unreleased
+## 1.0.1
+
+- Automatically acquire only the selected missing Tagger when Use Image Input is ON, including promoted controls in the supplied subgraph. Analysis device does not trigger downloads.
+- Reuse verified installed files; serialize concurrent download requests and preserve pinned size/SHA verification. Keep manual installation, progress and retry controls.
+- Text mode and cloning alone do not acquire weights. Existing mismatched files remain untouched.
+- Add automatic-acquisition and concurrency regression coverage: 45 Python and 25 JavaScript tests pass. Generation prompts, sampler settings and workflow wiring are unchanged by this acquisition update.
+
+Previously published on main since 1.0:
 
 - Resolve opposing automatic lower-garment, glove and footwear tags when an explicit choice is selected. Preserve Auto, user text/additions and raw analysis.
 - Add **Check model files** with English/Japanese help; recheck without downloading. Completed status expires after five seconds, and analysis refresh also checks model readiness.
