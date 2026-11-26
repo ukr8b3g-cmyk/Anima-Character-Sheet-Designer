@@ -1,9 +1,29 @@
 import hashlib,io,tempfile,unittest
+from multiprocessing import get_context
 from pathlib import Path
 from unittest.mock import patch
 from anima_character_sheet import tagger_models as models
 from anima_character_sheet import tagger_download as service
 from anima_character_sheet.state import StateError
+
+
+def _acquire_model_in_process(root,model,contents,started,weights_requested,resume,results):
+    requested=[]
+
+    def open_fixture(request,**_):
+        filename=request.full_url.rsplit('/',1)[-1]
+        requested.append(filename)
+        if filename==model['filename']:
+            weights_requested.set()
+            if not resume.wait(15):
+                raise TimeoutError('Fixture download was not released')
+        return io.BytesIO(contents[filename])
+
+    with patch.object(models,'roots',return_value=(root,[root])),patch.object(models,'interrupt'),patch('urllib.request.urlopen',side_effect=open_fixture):
+        started.set()
+        path=models.model_files(model,True)
+    results.put((path,requested))
+
 
 class DownloadTests(unittest.TestCase):
     def test_concurrent_acquisition_reuses_completed_files(self):
@@ -16,6 +36,52 @@ class DownloadTests(unittest.TestCase):
                 paths=list(pool.map(lambda _:models.model_files(model,True),range(2)))
             self.assertEqual(paths[0],paths[1]);self.assertEqual(request.call_count,2)
             self.assertEqual(list(paths[0].glob('*.part')),[])
+
+    def test_separate_processes_reuse_one_initial_download(self):
+        contents={'model.onnx':b'weights','tags.csv':b'name,category\ncoat,0\n'}
+        def entry(name):
+            data=contents[name]
+            return dict(filename=name,size=len(data),sha256=hashlib.sha256(data).hexdigest())
+
+        model=dict(id='fixture',repo_id='owner/repo',revision='pinned',**entry('model.onnx'),metadata=entry('tags.csv'))
+        context=get_context('spawn')
+        resume=context.Event()
+        results=context.Queue()
+        self.addCleanup(results.close)
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            ready,first_fetch,second_fetch=context.Event(),context.Event(),context.Event()
+            first=context.Process(target=_acquire_model_in_process,
+                args=(root,model,contents,ready,first_fetch,resume,results))
+            second=context.Process(target=_acquire_model_in_process,
+                args=(root,model,contents,ready,second_fetch,resume,results))
+            started=[]
+            try:
+                first.start()
+                started.append(first)
+                self.assertTrue(first_fetch.wait(10),'First process never reached download')
+                ready.clear()
+                second.start()
+                started.append(second)
+                self.assertTrue(ready.wait(10),'Second process never started acquisition')
+                # Leave the first process in the transfer while the second attempts acquisition.
+                duplicate=second_fetch.wait(.5)
+            finally:
+                resume.set()
+                for process in started:
+                    process.join(10)
+                    if process.is_alive():
+                        process.terminate()
+                        process.join(10)
+            self.assertFalse(duplicate,'Both processes tried to download the same weights')
+            self.assertEqual([process.exitcode for process in started],[0,0])
+            reports=[results.get(timeout=3) for _ in started]
+            destination=root/model['id']
+            self.assertEqual([path for path,_ in reports],[destination,destination])
+            self.assertCountEqual([name for _,requested in reports for name in requested],contents)
+            for filename,data in contents.items():
+                self.assertEqual((destination/filename).read_bytes(),data)
+            self.assertEqual(list(destination.glob('*.part')),[])
 
     def test_image_execution_acquires_selected_model_but_manual_never_does(self):
         from anima_character_sheet.tagger_node import AnimaImageTagger
@@ -79,7 +145,7 @@ class DownloadTests(unittest.TestCase):
             directory=Path(tmp)/'fixture';directory.mkdir();(directory/'unrelated.txt').write_text('keep')
             with patch('urllib.request.urlopen',return_value=io.BytesIO(b'bad!')):
                 with self.assertRaisesRegex(StateError,'E_MODEL_HASH'):models.download_model(model)
-            self.assertEqual([p.name for p in directory.iterdir()],['unrelated.txt'])
+            self.assertEqual(sorted(p.name for p in directory.iterdir()),['.anima-download.lock','unrelated.txt'])
 
     def test_status_never_downloads_and_explicit_request_can_retry(self):
         service._jobs.clear()

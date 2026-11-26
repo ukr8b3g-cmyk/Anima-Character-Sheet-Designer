@@ -1,11 +1,20 @@
 """Pinned model discovery and selected-model acquisition in image mode."""
 import csv
+import errno
 import hashlib
 import json
+import os
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from threading import RLock
+from time import sleep
 from .state import fail
+
+if os.name == 'nt':
+    import msvcrt
+else:
+    import fcntl
 
 _verified={}
 _refresh={}
@@ -56,16 +65,46 @@ def model_files(model,allow_download=False,refresh=False):
     if not allow_download: fail('E_MODEL_MISSING',model['id'],f"Install the pinned files in {own/model['id']} or use Download selected model.")
     return download_model(model)
 
+@contextmanager
+def _model_download_lock(destination):
+    # Keep the lock file at a stable path for processes already waiting on it.
+    with (destination/'.anima-download.lock').open('a+b') as lock:
+        lock.seek(0)
+        while True:
+            interrupt()
+            try:
+                if os.name == 'nt':
+                    msvcrt.locking(lock.fileno(),msvcrt.LK_NBLCK,1)
+                else:
+                    fcntl.flock(lock.fileno(),fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError as error:
+                if error.errno not in (errno.EACCES, errno.EAGAIN):
+                    raise
+                sleep(.1)
+            else:
+                break
+        try:
+            yield
+        finally:
+            if os.name == 'nt':
+                msvcrt.locking(lock.fileno(),msvcrt.LK_UNLCK,1)
+            else:
+                fcntl.flock(lock.fileno(),fcntl.LOCK_UN)
+
+
 def download_model(model,progress=None):
     # UI preparation and queued inference share one acquisition path.
-    with _download_lock:
-        return _download_model(model,progress)
+    own,_=roots()
+    destination=own/model['id']
+    destination.mkdir(parents=True,exist_ok=True)
+    with _download_lock,_model_download_lock(destination):
+        return _download_model(model,destination,progress)
 
-def _download_model(model,progress=None):
+
+def _download_model(model,destination,progress):
     """Explicit acquisition of manifest-pinned files; never replace existing weights."""
     from urllib.request import Request, urlopen
-    own,_=roots(); required=required_files(model)
-    destination=own/model['id']; destination.mkdir(parents=True,exist_ok=True)
+    required=required_files(model)
     total=sum(f['size'] for f in required); completed=0; downloaded=False
     def report(phase,received=0,filename=''):
         if progress: progress(phase,completed+received,total,filename)
