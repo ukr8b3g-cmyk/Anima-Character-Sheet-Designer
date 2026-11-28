@@ -1,4 +1,4 @@
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 from .anima_character_sheet.node import AnimaCharacterSheetDesigner
 from .anima_character_sheet.assemble import AnimaCharacterSheetAssemble
 from .anima_character_sheet.tagger_node import AnimaImageTagger

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2
+
+- Prevent duplicate first-time Tagger downloads when separate ComfyUI processes share a model folder. Waiting processes reuse verified files from the first download.
+- Add a two-process regression test for shared model acquisition.
+
 ## 1.0.1
 
 - Automatically acquire only the selected missing Tagger when Use Image Input is ON, including promoted controls in the supplied subgraph. Analysis device does not trigger downloads.

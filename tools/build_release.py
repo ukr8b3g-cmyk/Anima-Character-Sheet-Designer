@@ -6,7 +6,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 FOLDER = 'Anima-Character-Sheet-Designer'
 DEST = ROOT / 'dist'
 DEST.mkdir(exist_ok=True)

@@ -1,6 +1,6 @@
-# Anima Character Sheet Designer — v1.0.1
+# Anima Character Sheet Designer — v1.0.2
 
-[English](README.md) · [v1.0.1ダウンロード](https://github.com/ukr8b3g-cmyk/Anima-Character-Sheet-Designer/releases/tag/v1.0.1) · [ワークフロー](examples/Anima-Character-Sheet-Designer-Text-or-Image.json)
+[English](README.md) · [v1.0.2ダウンロード](https://github.com/ukr8b3g-cmyk/Anima-Character-Sheet-Designer/releases/tag/v1.0.2) · [ワークフロー](examples/Anima-Character-Sheet-Designer-Text-or-Image.json)
 
 ComfyUIで **Anima用のキャラクターシート** を作成します。最大 **13ビューを個別生成して1枚へ合成**。テキスト入力と、**PixAI Tagger v1.0 FP16／WD EVA02 Large v3** による画像のタグ解析を切り替えられます。
 
@@ -27,7 +27,7 @@ H3版・Qwen版のように元画像を描画モデルへ直接参照させた�
 2. 不足している場合は **ComfyUIのPython環境** に `requirements.txt` の依存を入れます。画像解析にはCPU用の `onnxruntime`、またはCUDAに対応した `onnxruntime-gpu` も必要です。両方は入れず、環境に合う片方を使ってください。ノードがPython依存を自動導入することはありません。
 3. 付属ワークフロー用の [Save WEBP Meta](https://github.com/ukr8b3g-cmyk/ComfyUI-save-webp-meta-node) を導入します。LoRA読込は標準ノードです。rgthree・Anima Ref Adapterは不要です。
 4. 下表の生成用モデルを導入します。インストール・更新後はComfyUIを再起動し、ブラウザーを再読込します。
-5. `examples` のJSON、またはReleaseの **Workflow-v1.0.1.zip** を開きます。ZIPには提供されたサンプル画像も入っています。標準の **Load Image** でサンプルか自分の画像を読み込んでください。JSONの隣に画像を置くだけではComfyUIのinputフォルダーには登録されません。
+5. `examples` のJSON、またはReleaseの **Workflow-v1.0.2.zip** を開きます。ZIPには提供されたサンプル画像も入っています。標準の **Load Image** でサンプルか自分の画像を読み込んでください。JSONの隣に画像を置くだけではComfyUIのinputフォルダーには登録されません。
 
 Anima・サブグラフに対応する新しいComfyUIを使ってください。ローカル検証はComfyUI0.43.0／frontend1.57.4です。標準・利用者指定のノード名を保持し、付属サブグラフの操作項目は英語／日本語ロケールへ追従します。
 
@@ -137,7 +137,7 @@ CSVはモデルの出力番号とタグ名を対応付ける専用辞書です�
 
 衣装型・手・履物を明示すると、対応ビューで設定に反する自動外観タグを除外します。**Auto** は重ね着も含め、抽出した衣装を保持します。手動入力文・Part prompts・追加タグ・元の解析結果は保持します。生成を誘導する指定であり、衣装や向きの完全な再現を保証するものではありません。
 
-**Auto／Manualの出力サイズは完成シートの寸法** です。各ビューを別々に生成してAssembleで配置します。人形のガイドは合成配置のプレビューで、Animaへ送りません。掲載画面は開発中に提供されたもので、製品ノードの版表示はv1.0.1です。
+**Auto／Manualの出力サイズは完成シートの寸法** です。各ビューを別々に生成してAssembleで配置します。人形のガイドは合成配置のプレビューで、Animaへ送りません。掲載画面は開発中に提供されたもので、製品ノードの版表示はv1.0.2です。
 
 ### Part prompts：部位への追加指示
 
@@ -172,7 +172,7 @@ Anima版の大きな違いです。**Prompts → Edit view prompts** を開き�
 
 入力文は4,000 Unicodeコードポイント／16,000 UTF-8バイト、部位指示は1,000、各ビューの基本文は2,000コードポイントが上限です。保存state／configは64KiB。Manualの完成寸法は導入済み環境の上限内かつ最大16,777,216画素です。Animaのトークン上限とは別の、本拡張の制限です。
 
-v1.0.1では**Python45件・JavaScript25件**が成功しました。自動取得、選択モデルの分離、サブグラフ経由の操作、失敗時の再試行範囲、同時要求でのファイル再利用を確認しています。未導入条件は小さなテスト用ファイルで再現し、導入済みの実モデルは削除・再取得していません。今回、生成プロンプト・サンプリングは変更しておらず、新たなGPU画質検証は行っていません。
+v1.0.2では**Python46件・JavaScript25件**が成功しました。自動取得、選択モデルの分離、サブグラフ経由の操作、失敗時の再試行範囲、モデルフォルダーを共有する別々の ComfyUI プロセスでの初回取得の再利用を確認しています。未導入条件は小さなテスト用ファイルで再現し、導入済みの実モデルは削除・再取得していません。今回、生成プロンプト・サンプリングは変更しておらず、新たなGPU画質検証は行っていません。
 
 v1.0時の確認：ローカルで **Python39件＋JavaScript18件**、実画面の日英切替・保存再読込・API配線の完全一致を確認。提供されたサンプルは1回の実測で5ビュー・1824×1072・44.3秒のWebPを生成しました。髪の端の切れや向き・細部の揺れは残ります。1画像・1seedの結果で、汎用的な品質・速度保証ではありません。[変更履歴](CHANGELOG.md)も参照してください。
 
